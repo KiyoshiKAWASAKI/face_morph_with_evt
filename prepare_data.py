@@ -3,10 +3,10 @@ import sys
 import shutil
 
 
-all_morph_sequence_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/normal_quests"
-save_data_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/normal_quests_processed"
+all_morph_sequence_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/4_missing_morphs"
+save_data_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/4_missing_morphs_processed"
 
-training_frames = [8, 20, 30, 121, 133, 140]
+training_frames = [1, 8, 20, 30, 121, 133, 140, 142]
 testing_frames = [40, 45, 50, 55, 60,
                   65, 70, 75, 80, 85,
                   90, 95, 103, 113]
