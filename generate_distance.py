@@ -21,12 +21,14 @@ from numpy.linalg import norm
 # save_csv_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/distance_files/vggface_resnet.csv"
 
 # TODO: VGGFace - VGG16
-feature_dir = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/vggface_feat_vgg16"
-save_csv_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/distance_files/vggface_vgg16.csv"
+# feature_dir = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/vggface_feat_vgg16"
+# save_csv_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/distance_files/vggface_vgg16.csv"
+# size = 512
 
 # TODO: VGGFace - SE-Net
-# feature_dir = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/vggface_feat_senet"
-# save_csv_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/distance_files/vggface_senet.csv"
+feature_dir = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/vggface_feat_senet"
+save_csv_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/distance_files/vggface_senet.csv"
+size = 2048
 
 
 
@@ -35,6 +37,30 @@ frames = [8, 20, 30, 40, 45, 50, 55, 60,
           90, 95, 103, 113, 121, 133, 140]
 person_A_ind = 1
 person_B_ind = 142
+
+
+
+
+def check_features(feature_dir,
+                   shape):
+    """
+    Check all the features and remove the ones that have wrong size
+
+    :param feature_dir:
+    :param shape:
+    :return:
+    """
+    all_features = os.listdir(feature_dir)
+
+    for one_feature in all_features:
+        feature_path = os.path.join(feature_dir, one_feature)
+
+        feature = np.load(feature_path, allow_pickle=True)
+
+        if feature.shape[0] != shape:
+            os.remove(feature_path)
+            print("Incorrect shape: ", feature.shape)
+
 
 
 
@@ -129,6 +155,9 @@ def gen_distance_csv(feature_dir,
 
 
 if __name__ == "__main__":
+    # check_features(feature_dir=feature_dir,
+    #                shape=size)
+
     all_morphs = process_feature_files(feature_dir=feature_dir)
 
     gen_distance_csv(feature_dir=feature_dir,
