@@ -4,6 +4,8 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.metrics import pairwise_distances
 from numpy import dot
 from numpy.linalg import norm
+import csv
+import pandas as pd
 
 
 
@@ -13,8 +15,8 @@ from numpy.linalg import norm
 # save_csv_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/distance_files/facenet.csv"
 
 # DeepFace (Meta) features
-# feature_dir = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/deepface_feat"
-# save_csv_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/distance_files/deepface.csv"
+feature_dir = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/deepface_feat"
+save_csv_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/distance_files/deepface.csv"
 
 # VggFace - ResNet50
 # feature_dir = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/vggface_feat_resnet"
@@ -26,9 +28,9 @@ from numpy.linalg import norm
 # size = 512
 
 # TODO: VGGFace - SE-Net
-feature_dir = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/vggface_feat_senet"
-save_csv_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/distance_files/vggface_senet.csv"
-size = 2048
+# feature_dir = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/vggface_feat_senet"
+# save_csv_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/distance_files/vggface_senet.csv"
+# size = 2048
 
 
 
@@ -146,7 +148,14 @@ def gen_distance_csv(feature_dir,
     result_np = np.asarray(all_records)
 
     assert result_np.shape[0] == nb_rows
-    np.savetxt(save_result_path, result_np, delimiter=",", fmt="%s")
+    # np.savetxt(save_result_path, result_np, delimiter=",", fmt="%s")
+
+    # with open(save_result_path, 'w') as myfile:
+    #     wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+    #     wr.writerow(all_records)
+
+    df = pd.DataFrame(all_records)
+    df.to_csv(save_result_path)
 
     print("Result file saved: ", save_result_path)
 
