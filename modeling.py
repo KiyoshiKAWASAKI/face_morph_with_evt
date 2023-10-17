@@ -10,10 +10,12 @@ import pandas as pd
 result_csv_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/distance_files/deepface.csv"
 model_name = "deepface"
 
+save_sample_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/sampled_data"
+
 
 # Set number of training frames as a parameter
 nb_training = 3
-sampling_ratio = 1.0
+sampling_ratio = 0.8
 sampling_method = "uniform"
 
 
@@ -124,23 +126,56 @@ def sampling(csv_path,
     # TODO: Testing samples - use all of them? -JH
 
     if sample_B is not None:
-        return sample_A, sample_B, testing_data
+        # To make sure all models can use the same set of sampled data, save these samples
+        sub_folder = sampling_method + "_nb_train_" + str(nb_training) + "_ratio_" + \
+                     str(sampling_ratio) + "_tail_weight_" + str(tail_weight)
+        target_dir = os.path.join(save_sample_path, sub_folder)
+
+        if not os.path.isdir(target_dir):
+            os.mkdir(target_dir)
+
+        # Save samples to target directory
+        sample_A.to_csv(os.path.join(target_dir, "sample_a.csv"))
+        sample_B.to_csv(os.path.join(target_dir, "sample_b.csv"))
+        testing_data.to_csv(os.path.join(target_dir, "test_samples.csv"))
 
     else:
-        raise Exception("Empty sample for class B. Methods supported are: uniform, enriched_tail and long_tail")
+        raise Exception("Empty sample for class B. Sampling methods supported are: uniform, enriched_tail and long_tail.")
 
 
 
 
-def modeling(samples,
-             model):
+def gaussian_naive_bayes(training_data,
+                         testing_data):
     """
+    Use class A and class B training data to fit a gaussian model,
+    then use bayesian theorem to calculate probability.
 
-    :param samples:
-    :param model:
+    :param data: training data for A and B, pandas DF
+    :param enrich_tail: True or False
     :return:
     """
-    return
+
+    pass
+
+
+
+
+
+
+def evt_naive_bayes(training_data,
+                    testing_data,
+                    distribution):
+    """
+
+    :param training_data:
+    :param testing_data:
+    :param distribution:
+    :return:
+    """
+
+    pass
+
 
 
 
