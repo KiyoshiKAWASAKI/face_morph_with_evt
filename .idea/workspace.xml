@@ -16,8 +16,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/modeling.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-582">
-              <caret line="139" column="66" selection-start-line="139" selection-start-column="66" selection-end-line="139" selection-end-column="66" />
+            <state relative-caret-position="227">
+              <caret line="281" column="29" selection-start-line="281" selection-start-column="29" selection-end-line="281" selection-end-column="29" />
               <folding>
                 <element signature="e#1#15#0" expanded="true" />
               </folding>
@@ -69,6 +69,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -84,7 +85,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -131,18 +131,19 @@
       <workItem from="1685564707906" duration="11559000" />
       <workItem from="1688326533042" duration="58489000" />
       <workItem from="1697487963487" duration="445000" />
-      <workItem from="1697509042069" duration="2705000" />
+      <workItem from="1697509042069" duration="7725000" />
+      <workItem from="1697731378510" duration="9194000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="73198000" />
+    <option name="totallyTimeSpent" value="87412000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1080" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.12832801" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12939297" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -203,8 +204,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/modeling.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-582">
-          <caret line="139" column="66" selection-start-line="139" selection-start-column="66" selection-end-line="139" selection-end-column="66" />
+        <state relative-caret-position="227">
+          <caret line="281" column="29" selection-start-line="281" selection-start-column="29" selection-end-line="281" selection-end-column="29" />
           <folding>
             <element signature="e#1#15#0" expanded="true" />
           </folding>
