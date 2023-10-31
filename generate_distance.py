@@ -6,6 +6,7 @@ from numpy import dot
 from numpy.linalg import norm
 import csv
 import pandas as pd
+from scipy.spatial import distance
 
 
 
@@ -16,7 +17,7 @@ import pandas as pd
 
 # DeepFace (Meta) features
 feature_dir = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/deepface_feat"
-save_csv_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/distance_files/deepface.csv"
+save_csv_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/distance_files/deepface_.csv"
 
 # VggFace - ResNet50
 # feature_dir = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/vggface_feat_resnet"
@@ -77,6 +78,11 @@ def cosine_distance(feature_a,
     """
     return 1 - dot(feature_a, feature_b)/(norm(feature_a)*norm(feature_b))
 
+
+def euclidean_distance(feature_a,
+                       feature_b):
+
+    return distance.euclidean(feature_a, feature_b)
 
 
 
@@ -140,8 +146,13 @@ def gen_distance_csv(feature_dir,
             feature = np.load(feature_path, allow_pickle=True)
 
             # Computer distance to person A and person B
-            dist_A = cosine_distance(person_A_feat, feature)
-            dist_B = cosine_distance(person_B_feat, feature)
+            # dist_A = cosine_distance(person_A_feat, feature)
+            # dist_B = cosine_distance(person_B_feat, feature)
+
+            dist_A = euclidean_distance(person_A_feat, feature)
+            dist_B = euclidean_distance(person_B_feat, feature)
+
+            # print(dist_A, dist_B)
 
             all_records.append([one_morph, one_frame, dist_A, dist_B])
 

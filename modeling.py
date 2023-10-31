@@ -5,28 +5,30 @@ import matplotlib as plt
 import pandas as pd
 from math import sqrt, exp, pi
 from sklearn.naive_bayes import GaussianNB
+from scipy.stats import weibull_min, weibull_max, genextreme
 
-
-# Paths for result files
-result_csv_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/distance_files/deepface.csv"
+#####################################################
+# Adjustable params
+#####################################################
+# TODO: change these for different feature extractors
+result_csv_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/" \
+                  "face_morph_data/distance_files/deepface_euclidean.csv"
 model_name = "deepface"
 
-save_sample_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/sampled_data"
-
-data_dir = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/" \
-           "sampled_data/uniform_nb_train_3_ratio_0.8_tail_weight_0.4"
-
-
-# Set number of training frames as a parameter
-nb_training = 3
 sampling_ratio = 0.8
-sampling_method = "uniform"
+sampling_method = "long_tail"
 
+# data_dir = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/" \
+#            "sampled_data/uniform_nb_train_3_ratio_0.8_tail_weight_0.4"
 
-
+#####################################################
+# Fixed params
+#####################################################
+save_sample_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/sampled_data"
+nb_training = 4 # Do not change it - match with human data
 all_frames = [8, 20, 30, 40, 45, 50, 55, 60,
-                65, 70, 75, 80, 85,
-                90, 95, 103, 113, 121, 133, 140]
+              65, 70, 75, 80, 85,
+              90, 95, 103, 113, 121, 133, 140]
 
 
 def sampling(csv_path,
@@ -34,6 +36,7 @@ def sampling(csv_path,
              nb_training,
              sampling_ratio,
              sampling_method,
+             model_name,
              tail_weight=0.4):
     """
 
@@ -86,40 +89,34 @@ def sampling(csv_path,
         nb_sample_tail = nb_sample_head
         nb_sample_middle = nb_training_sample - nb_sample_head - nb_sample_tail
 
-        # According to the frame indices, get samples for each part
-        head_index = training_frame_for_B[0]
-        tail_index = training_frame_for_B[-1]
-        middle_index = list(set(training_frame_for_B) - set(head_index) - set(tail_index))
-
-        # Find all samples for each part
-        head_samples = training_data_B.loc[training_data_B['frame'].isin(head_index)]
-        tail_samples = training_data_B.loc[training_data_B['frame'].isin(tail_index)]
-        middle_samples = training_data_B.loc[training_data_B['frame'].isin(middle_index)]
+        # Sort all the samples by distance to A
+        training_data_B = training_data_B.sort_values('distance_to_A')
+        training_data_B_sampled = training_data_B.sample(nb_training_sample)
 
         # Then do the sampling
-        head_samples = head_samples.sample(nb_sample_head)
-        tail_samples = tail_samples.sample(nb_sample_tail)
-        middle_samples = middle_samples.sample(nb_sample_middle)
+        head_samples = training_data_B_sampled.head(nb_sample_head)
+        tail_samples = training_data_B_sampled.tail(nb_sample_tail)
+        middle_samples = training_data_B_sampled[nb_sample_head:-nb_sample_tail].sample(nb_sample_middle)
+
+        print(head_samples.shape, tail_samples.shape, middle_samples.shape)
 
         # Combine 3 dataframes
         sample_B = pd.concat([head_samples, middle_samples, tail_samples], ignore_index=True)
 
     elif sampling_method == "long_tail":
         # Find number of samples for the long tail.
-        nb_sample_tail = int(nb_training_sample * tail_weight * 2)
+        nb_sample_tail = int(nb_training_sample * tail_weight)
         nb_sample_middle = nb_training_sample - nb_sample_tail
 
-        # According to the frame indices, get samples for each part
-        tail_index = training_frame_for_B[-1]
-        middle_index = list(set(training_frame_for_B) - set(tail_index))
+        # Sort values
+        training_data_B = training_data_B.sort_values('distance_to_A')
+        training_data_B_sampled = training_data_B.sample(nb_training_sample)
 
         # Find all samples for each part
-        tail_samples = training_data_B.loc[training_data_B['frame'].isin(tail_index)]
-        middle_samples = training_data_B.loc[training_data_B['frame'].isin(middle_index)]
+        tail_samples = training_data_B_sampled.tail(nb_sample_tail)
+        middle_samples =training_data_B_sampled[:-nb_sample_tail].sample(nb_sample_middle)
 
-        # Then do the sampling
-        tail_samples = tail_samples.sample(nb_sample_tail)
-        middle_samples = middle_samples.sample(nb_sample_middle)
+        print(middle_samples.shape, tail_samples.shape)
 
         # Combine 2 dataframes
         sample_B = pd.concat([middle_samples, tail_samples], ignore_index=True)
@@ -127,11 +124,11 @@ def sampling(csv_path,
     else:
         sample_B = None
 
-    # TODO: Testing samples - use all of them? -JH
+    # TODO: Testing samples - use all of them? -JH -> Yup
 
     if sample_B is not None:
         # To make sure all models can use the same set of sampled data, save these samples
-        sub_folder = sampling_method + "_nb_train_" + str(nb_training) + "_ratio_" + \
+        sub_folder = model_name + "_" + sampling_method + "_nb_train_" + str(nb_training) + "_ratio_" + \
                      str(sampling_ratio) + "_tail_weight_" + str(tail_weight)
         target_dir = os.path.join(save_sample_path, sub_folder)
 
@@ -242,6 +239,8 @@ def gaussian_naive_bayes(data_dir):
     print("SD for B :", sd_b)
     print("Var for B: ", var_b)
 
+    stats = [mean_a, sd_a, var_a, mean_b, sd_b, var_b]
+
     """
     # Ignore these for now 0 JH
     
@@ -274,12 +273,144 @@ def gaussian_naive_bayes(data_dir):
     # Combine dictionaries and sort
     prob_dict = {**prob_dict_a, **prob_dict_b, **prob_dict_test}
     prob_dict = dict(sorted(prob_dict.items()))
+
     print(prob_dict)
 
+    return prob_dict, stats
 
 
 
-def plot_prob_curve(prob_dict):
+
+def evt_fit(data,
+              distribution):
+    """
+
+    :param data:
+    :param distribution:
+    :return:
+    """
+    # Format data
+    sample = data[["distance_to_A"]]
+    sample = sample.distance_to_A.values.tolist()
+
+    # Fit EVT models
+    if distribution == "weibull":
+        shape, loc, scale = weibull_min.fit(sample)
+        return shape, loc, scale
+
+    elif distribution == "reversed_weibull":
+        shape, loc, scale = weibull_max.fit(sample)
+        return shape, loc, scale
+
+    else:
+        raise Exception('Distribution not implemented.')
+
+
+
+
+def evt_predict(data,
+                shape,
+                loc,
+                scale,
+                distribution):
+    """
+
+    :param data:
+    :param shape:
+    :param loc:
+    :param scale:
+    :return:
+    """
+    sample_w_frame = data[["frame", "distance_to_A"]]
+    frames = sample_w_frame['frame'].unique()
+
+    # print("Frames in: ", frames)
+
+    prob_dict = {}
+    prob_one_frame = []
+
+    for one_frame in frames:
+        frames = sample_w_frame.loc[sample_w_frame['frame'] == one_frame]
+        dist = frames["distance_to_A"].tolist()
+
+        for one_dist in dist:
+            if distribution == "weibull":
+                prob = weibull_min.cdf(one_dist, shape, loc, scale)
+            elif distribution == "reversed_weibull":
+                prob = weibull_max.cdf(one_dist, shape, loc, scale)
+            else:
+                raise Exception('Distribution not implemented.')
+
+            prob_one_frame.append(prob)
+
+        prob_dict[one_frame] = mean(prob_one_frame)
+
+    return prob_dict
+
+
+
+
+def evt_model(data_dir,
+             distribution):
+    """
+
+    :return:
+    """
+
+    # Load training data for class A and B, and testing data
+    training_a = pd.read_csv(os.path.join(data_dir, "sample_a.csv"))
+    training_b = pd.read_csv(os.path.join(data_dir, "sample_b.csv"))
+    testing = pd.read_csv(os.path.join(data_dir, "test_samples.csv"))
+
+    """
+    Fit a distribution, currently choose between "weibull" and "reversed_weibull".
+    
+    weibull: weibull_min. When data is bounded from below.
+    reversed weibull:weibull_max. When data is bounded from above.
+    
+    fit func returns shape, location and scale parameters
+    """
+    shape_a, loc_a, scale_a = evt_fit(data=training_a,
+                                        distribution=distribution)
+
+    shape_b, loc_b, scale_b = evt_fit(data=training_b,
+                                        distribution=distribution)
+
+    """
+    Use the parameters for our testing samples.
+    Probability for each sample is produced by CDF func.
+    """
+    prob_dict_a = evt_predict(data=training_a,
+                                 shape=shape_b,
+                                 loc=loc_b,
+                                 scale=scale_b,
+                                 distribution="weibull")
+
+    prob_dict_b = evt_predict(data=training_b,
+                                 shape=shape_b,
+                                 loc=loc_b,
+                                 scale=scale_b,
+                                 distribution="weibull")
+
+
+    prob_dict_test = evt_predict(data=testing,
+                            shape=shape_b,
+                            loc=loc_b,
+                            scale=scale_b,
+                            distribution="weibull")
+
+    prob_dict = {**prob_dict_a, **prob_dict_b, **prob_dict_test}
+    prob_dict = dict(sorted(prob_dict.items()))
+
+    print(prob_dict)
+
+    return prob_dict
+
+
+
+
+def plot_prob_curve(gaussian_prob,
+                    evt_prob):
     """
 
     :param prob:
@@ -290,28 +421,21 @@ def plot_prob_curve(prob_dict):
 
 
 
-def evt_naive_bayes(training_data,
-                    testing_data,
-                    distribution):
-    """
-
-    :param training_data:
-    :param testing_data:
-    :param distribution:
-    :return:
-    """
-
-    pass
-
-
-
-
 
 if __name__ == "__main__":
-    # sampling(csv_path=result_csv_path,
-    #          frame_index=all_frames,
-    #          nb_training=nb_training,
-    #          sampling_ratio=sampling_ratio,
-    #          sampling_method=sampling_method)
+    # Data Sampling
+    sampling(csv_path=result_csv_path,
+             frame_index=all_frames,
+             nb_training=nb_training,
+             sampling_ratio=sampling_ratio,
+             model_name=model_name,
+             sampling_method=sampling_method)
 
-    gaussian_naive_bayes(data_dir=data_dir)
+    # Gaussian probabilities
+    # gaussian_prob, stats = gaussian_naive_bayes(data_dir=data_dir)
+
+    # EVT probabilities
+    # evt_prob = evt_model(data_dir=data_dir,
+    #                      distribution="weibull")
+
+    # Plot Gaussian and EVT in one figure
