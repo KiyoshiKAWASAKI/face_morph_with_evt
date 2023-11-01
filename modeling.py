@@ -18,8 +18,10 @@ model_name = "deepface"
 sampling_ratio = 0.8
 sampling_method = "long_tail"
 
-# data_dir = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/" \
-#            "sampled_data/uniform_nb_train_3_ratio_0.8_tail_weight_0.4"
+data_dir = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/" \
+           "sampled_data/deepface_uniform_nb_train_4_ratio_0.8_tail_weight_0.4"
+
+tail_ratio = 0.1
 
 #####################################################
 # Fixed params
@@ -282,16 +284,37 @@ def gaussian_naive_bayes(data_dir):
 
 
 def evt_fit(data,
-              distribution):
+            distribution,
+            tail_choice,
+            tail_ratio):
     """
 
-    :param data:
-    :param distribution:
+    :param data: Sampled data
+    :param distribution: Weibull or reversed Weibull
+    :param tail_choice:
+        right - fit tails taken from the right side of sorted samples
+        left - fit tails from left side. Scores are flipped by doing (max_score - current_score)
+    :param tail_ratio: larger than 0.0, smaller or equal to 0.5
     :return:
     """
     # Format data
     sample = data[["distance_to_A"]]
     sample = sample.distance_to_A.values.tolist()
+
+    # Find the tail samples we will use to fit model
+    nb_tail = int(len(sample) * tail_ratio)
+    sample = sorted(sample)
+
+    if tail_choice == "right":
+        tail_samples = sample[-nb_tail:]
+
+    elif tail_choice == "left":
+        max = sample[-1]
+        tail_samples_right = sample[-nb_tail:]
+        tail_samples = [(max - i) for i in tail_samples_right]
+
+    else:
+        raise Exception('Tail choice not implemented. Choose from left or right.')
 
     # Fit EVT models
     if distribution == "weibull":
@@ -424,18 +447,18 @@ def plot_prob_curve(gaussian_prob,
 
 if __name__ == "__main__":
     # Data Sampling
-    sampling(csv_path=result_csv_path,
-             frame_index=all_frames,
-             nb_training=nb_training,
-             sampling_ratio=sampling_ratio,
-             model_name=model_name,
-             sampling_method=sampling_method)
+    # sampling(csv_path=result_csv_path,
+    #          frame_index=all_frames,
+    #          nb_training=nb_training,
+    #          sampling_ratio=sampling_ratio,
+    #          model_name=model_name,
+    #          sampling_method=sampling_method)
 
     # Gaussian probabilities
-    # gaussian_prob, stats = gaussian_naive_bayes(data_dir=data_dir)
+    gaussian_prob, stats = gaussian_naive_bayes(data_dir=data_dir)
 
     # EVT probabilities
-    # evt_prob = evt_model(data_dir=data_dir,
-    #                      distribution="weibull")
+    evt_prob = evt_model(data_dir=data_dir,
+                         distribution="weibull")
 
     # Plot Gaussian and EVT in one figure
