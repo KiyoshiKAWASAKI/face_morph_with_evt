@@ -6,26 +6,48 @@ import pandas as pd
 from math import sqrt, exp, pi
 from sklearn.naive_bayes import GaussianNB
 from scipy.stats import weibull_min, weibull_max, genextreme
+from matplotlib.pyplot import figure
 
 #####################################################
 # Adjustable params
 #####################################################
-# TODO: change these for different feature extractors
+# TODO: DeepFace
+# result_csv_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/" \
+#                   "face_morph_data/distance_files/deepface_euclidean.csv"
+# model_name = "deepface"
+
+# TODO: FaceNet
+# result_csv_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/" \
+#                   "face_morph_data/distance_files/facenet_euclidean.csv"
+# model_name = "facenet"
+
+# TODO: VGG ResNet
+# result_csv_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/" \
+#                   "face_morph_data/distance_files/vggface_resnet_euclidean.csv"
+# model_name = "vggface_resnet"
+
+# TODO: VGG VGG-16
+# result_csv_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/" \
+#                   "face_morph_data/distance_files/vggface_vgg16_euclidean.csv"
+# model_name = "vggface_vgg16"
+
+# TODO: VGG VGG-16
 result_csv_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/" \
-                  "face_morph_data/distance_files/deepface_euclidean.csv"
-model_name = "deepface"
+                  "face_morph_data/distance_files/vggface_senet_euclidean.csv"
+model_name = "vggface_senet"
+
 
 sampling_ratio = 0.8
-# sampling_method = "uniform"
-# sampling_method = "enriched_tail"
-sampling_method = "long_tail"
 
+# sampling_method = "uniform"
 # data_dir = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/" \
 #            "sampled_data/deepface_uniform_nb_train_4_ratio_0.8_tail_weight_0.4"
 
+# sampling_method = "enriched_tail"
 # data_dir = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/" \
 #            "sampled_data/deepface_enriched_tail_nb_train_4_ratio_0.8_tail_weight_0.4"
 
+sampling_method = "long_tail"
 data_dir = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/" \
            "sampled_data/deepface_long_tail_nb_train_4_ratio_0.8_tail_weight_0.4"
 
@@ -49,6 +71,73 @@ human = [0.07147375079063880, 0.08383233532934130, 0.08802263439170070, 0.114619
          0.40833594484487600, 0.526365645721503, 0.631214600377596 ,0.7495285983658080,
          0.8049010367577760, 0.8561536040289580, 0.8927444794952680, 0.9238305941845770,
          0.9286841274850110, 0.936197094125079, 0.9360629921259840, 0.9438485804416400]
+
+
+
+def plot_original_samples(csv_path,
+                          frame_index,
+                          nb_training=4):
+    """
+
+    :param csv_path:
+    :param frame_index:
+    :return:
+    """
+    # Load distance CSV into data frame
+    data = pd.read_csv(csv_path, delimiter=',')
+
+    # Find training frames for A and B, and frames in the gap
+    training_frame_for_A = frame_index[:nb_training]
+    training_frame_for_B = frame_index[-nb_training:]
+    testing_frame = list(set(all_frames) - set(training_frame_for_A) - set(training_frame_for_B))
+
+    # Reset column names
+    data = data[["0", "1", "2", "3"]]
+    data.columns = ['morph_name', 'frame', 'distance_to_A', 'distance_to_B']
+
+    # Find rows for training and testing
+    training_data_A = data.loc[data['frame'].isin(training_frame_for_A)]
+    training_data_B = data.loc[data['frame'].isin(training_frame_for_B)]
+    testing_data = data.loc[data['frame'].isin(testing_frame)]
+
+    # Get some stats
+    print(training_data_A['distance_to_A'].describe())
+    print(training_data_B['distance_to_A'].describe())
+    print(testing_data['distance_to_A'].describe())
+
+    # Plot all the data
+    plt.plot(training_data_A['distance_to_A'], [0]*1200 , "-r", label="training_A")
+    plt.plot(training_data_B['distance_to_A'], [2]*1200, "-g", label="training_B")
+    plt.plot(testing_data['distance_to_A'], [1]*3600, "-b", label="test")
+    plt.legend(loc="upper left")
+
+    save_fig_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/" + model_name + "/all_data_plot.png"
+
+    if not os.path.isdir("/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/" + model_name):
+        os.mkdir("/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/" + model_name)
+
+    plt.savefig(save_fig_path)
+
+    plt.clf()
+
+    # Plot histograms to see the data distribution
+    # figure(figsize=(10, 30))
+    fig, ax = plt.subplots(nrows=3, ncols=1, figsize=(6, 9), sharey=True, sharex=True)
+
+    ax[0].hist(training_data_A['distance_to_A'], bins=20, label="training_A", width=0.8)
+    ax[0].set_title('Training A')
+    ax[1].hist(training_data_B['distance_to_A'], bins=20,label="training_B", width=0.8)
+    ax[1].set_title('Training B')
+    ax[2].hist(testing_data['distance_to_A'], bins=20, label="test", width=0.8)
+    ax[2].set_title('Testing')
+
+    fig.tight_layout()
+
+    save_hist_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/" + model_name + "/all_data_hist.png"
+    plt.savefig(save_hist_path)
+    plt.clf()
+
+
 
 
 def sampling(csv_path,
@@ -487,6 +576,10 @@ def plot_prob_curve(gaussian_prob,
 
 
 if __name__ == "__main__":
+    # Plot for original data
+    plot_original_samples(csv_path=result_csv_path,
+                          frame_index=all_frames)
+
     # Data Sampling
     # sampling(csv_path=result_csv_path,
     #          frame_index=all_frames,
@@ -495,20 +588,20 @@ if __name__ == "__main__":
     #          model_name=model_name,
     #          sampling_method=sampling_method)
 
-    # Gaussian probabilities
-    gaussian_prob, stats = gaussian_naive_bayes(data_dir=data_dir)
-
-    # EVT probabilities
-    evt_prob = evt_model(data_dir=data_dir,
-                         distribution="weibull",
-                         tail_ratio=tail_ratio,
-                         tail_type=tail_type)
-
-    # Plot Gaussian and EVT in one figure
-    plot_prob_curve(gaussian_prob=gaussian_prob,
-                    evt_prob=evt_prob,
-                    tail_choice=tail_type,
-                    tail_ratio=tail_ratio,
-                    human_data=human,
-                    sampling=sampling_method,
-                    save_fig_dir=save_fig_base)
+    # # Gaussian probabilities
+    # gaussian_prob, stats = gaussian_naive_bayes(data_dir=data_dir)
+    #
+    # # EVT probabilities
+    # evt_prob = evt_model(data_dir=data_dir,
+    #                      distribution="weibull",
+    #                      tail_ratio=tail_ratio,
+    #                      tail_type=tail_type)
+    #
+    # # Plot Gaussian and EVT in one figure
+    # plot_prob_curve(gaussian_prob=gaussian_prob,
+    #                 evt_prob=evt_prob,
+    #                 tail_choice=tail_type,
+    #                 tail_ratio=tail_ratio,
+    #                 human_data=human,
+    #                 sampling=sampling_method,
+    #                 save_fig_dir=save_fig_base)
