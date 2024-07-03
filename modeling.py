@@ -7,6 +7,7 @@ from math import sqrt, exp, pi
 from sklearn.naive_bayes import GaussianNB
 from scipy.stats import weibull_min, weibull_max, genextreme
 from matplotlib.pyplot import figure
+import itertools
 
 #####################################################
 # Adjustable params
@@ -27,33 +28,33 @@ from matplotlib.pyplot import figure
 # model_name = "vggface_resnet"
 
 # TODO: VGG VGG-16
-# result_csv_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/" \
-#                   "face_morph_data/distance_files/vggface_vgg16_euclidean.csv"
-# model_name = "vggface_vgg16"
+result_csv_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/" \
+                  "face_morph_data/distance_files/vggface_vgg16_euclidean.csv"
+model_name = "vggface_vgg16"
 
 # TODO: VGG VGG-16
-result_csv_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/" \
-                  "face_morph_data/distance_files/vggface_senet_euclidean.csv"
-model_name = "vggface_senet"
+# result_csv_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/" \
+#                   "face_morph_data/distance_files/vggface_senet_euclidean.csv"
+# model_name = "vggface_senet"
 
 
-sampling_ratio = 0.8
+sampling_ratio = 0.9
 
 # sampling_method = "uniform"
 # data_dir = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/" \
-#            "sampled_data/deepface_uniform_nb_train_4_ratio_0.8_tail_weight_0.4"
+#            "sampled_data/vggface_vgg16_uniform_nb_train_4_ratio_0.9_tail_weight_0.4"
 
 # sampling_method = "enriched_tail"
 # data_dir = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/" \
-#            "sampled_data/deepface_enriched_tail_nb_train_4_ratio_0.8_tail_weight_0.4"
+#            "sampled_data/vggface_vgg16_enriched_tail_nb_train_4_ratio_0.9_tail_weight_0.4"
 
 sampling_method = "long_tail"
 data_dir = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/" \
-           "sampled_data/deepface_long_tail_nb_train_4_ratio_0.8_tail_weight_0.4"
+           "sampled_data/vggface_vgg16_long_tail_nb_train_4_ratio_0.9_tail_weight_0.4"
 
-tail_ratio = 0.5
-tail_type = "right"
-# tail_type = "left"
+
+# tail_type = "right"
+tail_type = "left"
 
 #####################################################
 # Fixed params
@@ -275,7 +276,6 @@ def calculate_probability(x, mean, stdev):
 
 
 
-
 def get_prob(data_frame,
              classifier):
     """
@@ -410,9 +410,7 @@ def evt_fit(data,
         tail_samples = sample[-nb_tail:]
 
     elif tail_choice == "left":
-        max = sample[-1]
-        tail_samples_right = sample[-nb_tail:]
-        tail_samples = [(max - i) for i in tail_samples_right]
+        tail_samples = sample[:nb_tail]
 
     else:
         raise Exception('Tail choice not implemented. Choose from left or right.')
@@ -477,7 +475,9 @@ def evt_predict(data,
 def evt_model(data_dir,
               distribution,
               tail_type,
-              tail_ratio):
+              tail_ratio,
+              params=None,
+              fit_curve=False,):
     """
 
     :return:
@@ -496,43 +496,50 @@ def evt_model(data_dir,
     
     fit func returns shape, location and scale parameters
     """
-    shape_a, loc_a, scale_a = evt_fit(data=training_a,
-                                      distribution=distribution,
-                                      tail_choice=tail_type,
-                                      tail_ratio=tail_ratio)
+    if fit_curve:
+        shape_a, loc_a, scale_a = evt_fit(data=training_a,
+                                          distribution=distribution,
+                                          tail_choice=tail_type,
+                                          tail_ratio=tail_ratio)
 
-    shape_b, loc_b, scale_b = evt_fit(data=training_b,
-                                      distribution=distribution,
-                                      tail_choice=tail_type,
-                                      tail_ratio=tail_ratio)
+        shape_b, loc_b, scale_b = evt_fit(data=training_b,
+                                          distribution=distribution,
+                                          tail_choice=tail_type,
+                                          tail_ratio=tail_ratio)
 
-    """
-    Use the parameters for our testing samples.
-    Probability for each sample is produced by CDF func.
-    """
-    prob_dict_a = evt_predict(data=training_a,
-                                 shape=shape_b,
-                                 loc=loc_b,
-                                 scale=scale_b,
-                                 distribution="weibull")
+    else:
+        """
+        Use the parameters for our testing samples.
+        Probability for each sample is produced by CDF func.
+        """
+        shape_b = params[0]
+        scale_b = params[1]
+        loc_b = params[2]
 
-    prob_dict_b = evt_predict(data=training_b,
-                                 shape=shape_b,
-                                 loc=loc_b,
-                                 scale=scale_b,
-                                 distribution="weibull")
+        prob_dict_a = evt_predict(data=training_a,
+                                     shape=shape_b,
+                                     loc=loc_b,
+                                     scale=scale_b,
+                                     distribution="weibull")
+
+        prob_dict_b = evt_predict(data=training_b,
+                                     shape=shape_b,
+                                     loc=loc_b,
+                                     scale=scale_b,
+                                     distribution="weibull")
 
 
-    prob_dict_test = evt_predict(data=testing,
-                            shape=shape_b,
-                            loc=loc_b,
-                            scale=scale_b,
-                            distribution="weibull")
+        prob_dict_test = evt_predict(data=testing,
+                                shape=shape_b,
+                                loc=loc_b,
+                                scale=scale_b,
+                                distribution="weibull")
 
-    prob_dict = {**prob_dict_a, **prob_dict_b, **prob_dict_test}
-    prob_dict = dict(sorted(prob_dict.items()))
+        prob_dict = {**prob_dict_a, **prob_dict_b, **prob_dict_test}
+        prob_dict = dict(sorted(prob_dict.items()))
 
     print(prob_dict)
+    print(shape_b, scale_b, loc_b)
 
     return prob_dict
 
@@ -546,6 +553,7 @@ def plot_prob_curve(gaussian_prob,
                     human_data,
                     save_fig_dir,
                     sampling,
+                    params=None,
                     model=model_name):
     """
 
@@ -568,17 +576,19 @@ def plot_prob_curve(gaussian_prob,
         os.mkdir(os.path.join(save_fig_dir, model))
 
     save_fig_path = save_fig_dir + "/" + model + "/" + str(sampling) + "_tail_side_" + \
-                    str(tail_choice) + "_tail_ratio_" + str(tail_ratio) + ".png"
+                    str(tail_choice) + "_tail_ratio_" + str(params[-1]) + "_shape_" + str(params[0]) + \
+                    "_scale_" + str(params[1]) + "_loc_" + str(params[2]) + ".png"
 
     plt.savefig(save_fig_path)
+    plt.clf()
 
 
 
 
 if __name__ == "__main__":
     # Plot for original data
-    plot_original_samples(csv_path=result_csv_path,
-                          frame_index=all_frames)
+    # plot_original_samples(csv_path=result_csv_path,
+    #                       frame_index=all_frames)
 
     # Data Sampling
     # sampling(csv_path=result_csv_path,
@@ -588,20 +598,50 @@ if __name__ == "__main__":
     #          model_name=model_name,
     #          sampling_method=sampling_method)
 
-    # # Gaussian probabilities
-    # gaussian_prob, stats = gaussian_naive_bayes(data_dir=data_dir)
-    #
+    # Gaussian probabilities
+    gaussian_prob, stats = gaussian_naive_bayes(data_dir=data_dir)
+    print("Prob from sklearn:")
+    print(gaussian_prob)
+
+    print("Prob from scratch:")
+
+
     # # EVT probabilities
-    # evt_prob = evt_model(data_dir=data_dir,
-    #                      distribution="weibull",
-    #                      tail_ratio=tail_ratio,
-    #                      tail_type=tail_type)
+    # """
+    # Grid search for best parameter combos.
+    # First round is a rough search. Use the same parameters for all setups
+    # """
+    # shape = np.arange(0.25, 0.35, 0.01).tolist()
+    # shape = [round(item, 3) for item in shape]
     #
-    # # Plot Gaussian and EVT in one figure
-    # plot_prob_curve(gaussian_prob=gaussian_prob,
-    #                 evt_prob=evt_prob,
-    #                 tail_choice=tail_type,
-    #                 tail_ratio=tail_ratio,
-    #                 human_data=human,
-    #                 sampling=sampling_method,
-    #                 save_fig_dir=save_fig_base)
+    # scale = np.arange(1.0, 1.2, 0.5).tolist()
+    # scale = [round(item, 3) for item in scale]
+    #
+    # location = np.arange(50, 55, 0.5).tolist()
+    # location = [round(item, 1) for item in location]
+    #
+    # # print(len(shape), len(scale), len(location))
+    #
+    # tail_ratio = [0.1, 0.2, 0.3, 0.4, 0.5]
+    #
+    # all_params = list(itertools.product(*[shape, scale, location, tail_ratio]))
+    # print(len(all_params))
+    # # print(all_params[0])
+    #
+    # for one_param in all_params:
+    #     evt_prob = evt_model(data_dir=data_dir,
+    #                          distribution="weibull",
+    #                          tail_ratio=one_param[-1],
+    #                          tail_type=tail_type,
+    #                          params=one_param,
+    #                          fit_curve=False)
+    #
+    #     # # Plot Gaussian and EVT in one figure
+    #     plot_prob_curve(gaussian_prob=gaussian_prob,
+    #                     evt_prob=evt_prob,
+    #                     tail_choice=tail_type,
+    #                     tail_ratio=one_param[-1],
+    #                     human_data=human,
+    #                     sampling=sampling_method,
+    #                     save_fig_dir=save_fig_base,
+    #                     params=one_param)
