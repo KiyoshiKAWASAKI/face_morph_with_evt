@@ -10,28 +10,13 @@ from scipy.spatial import distance
 
 
 
-# Path to features
-# FaceNet (Google) features
-# feature_dir = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/facenet_feat"
-# save_csv_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/distance_files/facenet_euclidean.csv"
+# Paths
+feature_dir = "/project01/cvrl/jhuang24/face_morph_v4_5_sets_features/"
+save_csv_path = "/project01/cvrl/jhuang24/face_morph_v4_5_sets_dist/"
 
-# DeepFace (Meta) features
-# feature_dir = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/deepface_feat"
-# save_csv_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/distance_files/deepface.csv"
 
-# VggFace - ResNet50
-# feature_dir = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/vggface_feat_resnet"
-# save_csv_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/distance_files/vggface_resnet_euclidean.csv"
 
-# TODO: VGGFace - VGG16
-# feature_dir = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/vggface_feat_vgg16"
-# save_csv_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/distance_files/vggface_vgg16_euclidean.csv"
-# size = 512
 
-# TODO: VGGFace - SE-Net
-feature_dir = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/vggface_feat_senet"
-save_csv_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/distance_files/vggface_senet_euclidean.csv"
-size = 2048
 
 
 
