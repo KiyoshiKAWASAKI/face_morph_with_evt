@@ -345,7 +345,7 @@ def gaussian_naive_bayes(data_dir):
     stats = [mean_a, sd_a, var_a, mean_b, sd_b, var_b]
 
     """
-    # Ignore these for now 0 JH
+    # Ignore these for now - JH
     
     # Step 3: Gaussian Probability Density Function.
         # -- defined above
