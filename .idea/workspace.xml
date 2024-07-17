@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="972204b1-d771-476c-9168-32994b0853a0" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modeling.py" beforeDir="false" afterPath="$PROJECT_DIR$/modeling.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -15,10 +16,13 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/modeling.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="267">
-              <caret line="103" selection-start-line="103" selection-end-line="106" selection-end-column="51" />
+            <state relative-caret-position="277">
+              <caret line="619" column="30" selection-start-line="619" selection-start-column="30" selection-end-line="619" selection-end-column="30" />
               <folding>
                 <element signature="e#1#15#0" expanded="true" />
+                <element signature="e#3132#5528#0" />
+                <element signature="e#5724#9940#0" />
+                <element signature="e#18661#19494#0" />
               </folding>
             </state>
           </provider>
@@ -81,6 +85,9 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>print</find>
+      <find>tail_type</find>
+      <find>stat</find>
+      <find>stats</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -183,13 +190,13 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="168806000" />
+    <option name="totallyTimeSpent" value="178548000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1920" height="1080" extended-state="0" />
+    <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16187434" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13125764" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -201,9 +208,9 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info anchor="bottom" id="File Transfer" order="9" weight="0.3138614" />
+      <window_info anchor="bottom" id="File Transfer" order="9" weight="0.3132653" />
       <window_info anchor="bottom" id="Database Changes" order="10" />
-      <window_info anchor="bottom" id="Terminal" order="11" visible="true" weight="0.27227724" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.28061223" />
       <window_info anchor="bottom" id="Event Log" order="12" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="13" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -297,10 +304,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/modeling.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="103" selection-start-line="103" selection-end-line="106" selection-end-column="51" />
+        <state relative-caret-position="277">
+          <caret line="619" column="30" selection-start-line="619" selection-start-column="30" selection-end-line="619" selection-end-column="30" />
           <folding>
             <element signature="e#1#15#0" expanded="true" />
+            <element signature="e#3132#5528#0" />
+            <element signature="e#5724#9940#0" />
+            <element signature="e#18661#19494#0" />
           </folding>
         </state>
       </provider>

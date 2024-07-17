@@ -12,66 +12,67 @@ import itertools
 #####################################################
 # Adjustable params
 #####################################################
-# TODO: DeepFace
-# result_csv_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/" \
-#                   "face_morph_data/distance_files/deepface_euclidean.csv"
-# model_name = "deepface"
+# TODO: VGG-Face ResNet
+model_name = "vggface_resnet"
+uniform_csv_path = "/project01/cvrl/jhuang24/face_morph_v4_5_sets_dist/vgg_resnet_enriched_tail.csv"
+enrich_csv_path = "/project01/cvrl/jhuang24/face_morph_v4_5_sets_dist/vgg_resnet_uniform.csv"
 
-# TODO: FaceNet
-# result_csv_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/" \
-#                   "face_morph_data/distance_files/facenet_euclidean.csv"
-# model_name = "facenet"
+# TODO: VGG-Face VGG-16
+# model_name = "vggface_vgg16"
+# uniform_csv_path = "/project01/cvrl/jhuang24/face_morph_v4_5_sets_dist/vgg_vgg16_uniform.csv"
+# enrich_csv_path = "/project01/cvrl/jhuang24/face_morph_v4_5_sets_dist/vgg_vgg16_enriched_tail.csv"
 
-# TODO: VGG ResNet
-# result_csv_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/" \
-#                   "face_morph_data/distance_files/vggface_resnet_euclidean.csv"
-# model_name = "vggface_resnet"
-
-# TODO: VGG VGG-16
-result_csv_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/" \
-                  "face_morph_data/distance_files/vggface_vgg16_euclidean.csv"
-model_name = "vggface_vgg16"
-
-# TODO: VGG VGG-16
-# result_csv_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/" \
-#                   "face_morph_data/distance_files/vggface_senet_euclidean.csv"
+# TODO: VGG-Face VGG-16
 # model_name = "vggface_senet"
+# uniform_csv_path = "/project01/cvrl/jhuang24/face_morph_v4_5_sets_dist/vgg_senet_uniform.csv"
+# enrich_csv_path = "/project01/cvrl/jhuang24/face_morph_v4_5_sets_dist/vgg_senet_enriched_tail.csv"
 
 
 sampling_ratio = 0.9
 
-# sampling_method = "uniform"
-# data_dir = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/" \
-#            "sampled_data/vggface_vgg16_uniform_nb_train_4_ratio_0.9_tail_weight_0.4"
 
-# sampling_method = "enriched_tail"
-# data_dir = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/" \
-#            "sampled_data/vggface_vgg16_enriched_tail_nb_train_4_ratio_0.9_tail_weight_0.4"
+uniform_data_dir = "/project01/cvrl/jhuang24/face_morph_v4_5_sets_modeling/" \
+                   "vggface_resnet_uniform_nb_train_5_ratio_0.9_tail_weight_0.4"
 
-sampling_method = "long_tail"
-data_dir = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/" \
-           "sampled_data/vggface_vgg16_long_tail_nb_train_4_ratio_0.9_tail_weight_0.4"
+enriched_tail_data_dir = "/project01/cvrl/jhuang24/face_morph_v4_5_sets_modeling/" \
+                         "vggface_resnet_enriched_tail_nb_train_5_ratio_0.9_tail_weight_0.4"
+
+long_tail_data_dir = "/project01/cvrl/jhuang24/face_morph_v4_5_sets_modeling/" \
+                     "vggface_resnet_long_tail_nb_train_5_ratio_0.9_tail_weight_0.4"
 
 
 # tail_type = "right"
-tail_type = "left"
+# tail_type = "left"
 
 #####################################################
 # Fixed params
 #####################################################
-save_sample_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/sampled_data"
-save_fig_base = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/face_morph_data/"
+save_sample_path = "/project01/cvrl/jhuang24/face_morph_v4_5_sets_modeling"
+save_fig_base = "/project01/cvrl/jhuang24/face_morph_v4_5_sets_fig"
 
-nb_training = 4 # Do not change it - match with human data
-all_frames = [8, 20, 30, 40, 45, 50, 55, 60,
-              65, 70, 75, 80, 85,
-              90, 95, 103, 113, 121, 133, 140]
+nb_training = 5 # Do not change this - match with human data
 
-human = [0.07147375079063880, 0.08383233532934130, 0.08802263439170070, 0.11461951373539600,
-         0.1407828282828280, 0.1856513530522340, 0.23733081523449800, 0.32639545884579000,
-         0.40833594484487600, 0.526365645721503, 0.631214600377596 ,0.7495285983658080,
-         0.8049010367577760, 0.8561536040289580, 0.8927444794952680, 0.9238305941845770,
-         0.9286841274850110, 0.936197094125079, 0.9360629921259840, 0.9438485804416400]
+all_frames_uniform = [1, 2, 4, 5, 6,
+                      36, 38, 40, 42, 45,
+                      47, 50, 52, 55, 57,
+                      60, 62, 65, 67, 70,
+                      72, 74, 76, 78, 80,
+                      84, 86, 87, 100, 142]
+all_frames_enriched = [1, 2, 4, 5, 6,
+                      36, 38, 40, 42, 45,
+                      47, 50, 52, 55, 57,
+                      60, 62, 65, 67, 70,
+                      72, 74, 76, 78, 80,
+                      86, 101, 111, 121, 132]
+
+human_uniform_prob = [0.074786, 0.057692, 0.066239, 0.104701, 0.123932,
+                      0.188034, 0.258547, 0.388889, 0.485043, 0.602564,
+                      0.690171, 0.782051, 0.856838, 0.884615, 0.899573,
+                      0.931624, 0.938034, 0.955128, 0.950855, 0.972222]
+human_enrich_prob = [0.119048, 0.062907, 0.075922, 0.097614, 0.132321,
+                     0.201735, 0.288503, 0.392625, 0.496746, 0.613883,
+                     0.722343, 0.800434, 0.872017, 0.924078, 0.952278,
+                     0.952278, 0.958696, 0.976087, 0.973913, 0.980435]
 
 
 
@@ -79,6 +80,7 @@ def plot_original_samples(csv_path,
                           frame_index,
                           nb_training=4):
     """
+    Plot the distribution of original distance data from a model.
 
     :param csv_path:
     :param frame_index:
@@ -90,7 +92,7 @@ def plot_original_samples(csv_path,
     # Find training frames for A and B, and frames in the gap
     training_frame_for_A = frame_index[:nb_training]
     training_frame_for_B = frame_index[-nb_training:]
-    testing_frame = list(set(all_frames) - set(training_frame_for_A) - set(training_frame_for_B))
+    testing_frame = list(set(frame_index) - set(training_frame_for_A) - set(training_frame_for_B))
 
     # Reset column names
     data = data[["0", "1", "2", "3"]]
@@ -167,7 +169,7 @@ def sampling(csv_path,
     # Find training frames for A and B, and frames in the gap
     training_frame_for_A = frame_index[:nb_training]
     training_frame_for_B = frame_index[-nb_training:]
-    testing_frame = list(set(all_frames) - set(training_frame_for_A) - set(training_frame_for_B))
+    testing_frame = list(set(frame_index) - set(training_frame_for_A) - set(training_frame_for_B))
 
     # Reset column names
     data = data[["0", "1", "2", "3"]]
@@ -377,7 +379,7 @@ def gaussian_naive_bayes(data_dir):
     prob_dict = {**prob_dict_a, **prob_dict_b, **prob_dict_test}
     prob_dict = dict(sorted(prob_dict.items()))
 
-    print(prob_dict)
+    # print(prob_dict)
 
     return prob_dict, stats
 
@@ -586,25 +588,36 @@ def plot_prob_curve(gaussian_prob,
 
 
 if __name__ == "__main__":
-    # Plot for original data
-    # plot_original_samples(csv_path=result_csv_path,
-    #                       frame_index=all_frames)
-
-    # Data Sampling
-    # sampling(csv_path=result_csv_path,
-    #          frame_index=all_frames,
+    # TODO: Data Sampling - only need to run this when sampling parameters are changed
+    # sampling(csv_path=uniform_csv_path,
+    #          frame_index=all_frames_uniform,
     #          nb_training=nb_training,
     #          sampling_ratio=sampling_ratio,
     #          model_name=model_name,
-    #          sampling_method=sampling_method)
+    #          sampling_method="uniform")
+    #
+    # sampling(csv_path=enrich_csv_path,
+    #          frame_index=all_frames_enriched,
+    #          nb_training=nb_training,
+    #          sampling_ratio=sampling_ratio,
+    #          model_name=model_name,
+    #          sampling_method="enriched_tail")
+    #
+    # sampling(csv_path=enrich_csv_path,
+    #          frame_index=all_frames_enriched,
+    #          nb_training=nb_training,
+    #          sampling_ratio=sampling_ratio,
+    #          model_name=model_name,
+    #          sampling_method="long_tail")
 
     # Gaussian probabilities
-    gaussian_prob, stats = gaussian_naive_bayes(data_dir=data_dir)
-    print("Prob from sklearn:")
-    print(gaussian_prob)
+    gaussian_prob_uniform, stats_uniform = gaussian_naive_bayes(data_dir=uniform_data_dir)
+    print("Uniform Gaussian prob from sklearn:")
+    print(gaussian_prob_uniform)
 
-    print("Prob from scratch:")
-
+    gaussian_prob_enrich, stats_enrich = gaussian_naive_bayes(data_dir=enriched_tail_data_dir)
+    print("Enriched tail Gaussian prob from sklearn:")
+    print(gaussian_prob_enrich)
 
     # # EVT probabilities
     # """
