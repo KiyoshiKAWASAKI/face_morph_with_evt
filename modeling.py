@@ -22,11 +22,11 @@ enrich_csv_path = "/project01/cvrl/jhuang24/face_morph_v4_5_sets_dist/vgg_resnet
 # uniform_csv_path = "/project01/cvrl/jhuang24/face_morph_v4_5_sets_dist/vgg_vgg16_uniform.csv"
 # enrich_csv_path = "/project01/cvrl/jhuang24/face_morph_v4_5_sets_dist/vgg_vgg16_enriched_tail.csv"
 
-# TODO: VGG-Face VGG-16
+# TODO: VGG-Face SE-Net
 # model_name = "vggface_senet"
 # uniform_csv_path = "/project01/cvrl/jhuang24/face_morph_v4_5_sets_dist/vgg_senet_uniform.csv"
 # enrich_csv_path = "/project01/cvrl/jhuang24/face_morph_v4_5_sets_dist/vgg_senet_enriched_tail.csv"
-
+#
 
 sampling_ratio = 0.9
 
@@ -64,6 +64,11 @@ all_frames_enriched = [1, 2, 4, 5, 6,
                       60, 62, 65, 67, 70,
                       72, 74, 76, 78, 80,
                       86, 101, 111, 121, 132]
+
+human_test_ind = [36, 38, 40, 42, 45,
+                  47, 50, 52, 55, 57,
+                  60, 62, 65, 67, 70,
+                  72, 74, 76, 78, 80,]
 
 human_uniform_prob = [0.074786, 0.057692, 0.066239, 0.104701, 0.123932,
                       0.188034, 0.258547, 0.388889, 0.485043, 0.602564,
@@ -519,16 +524,16 @@ def evt_model(data_dir,
         loc_b = params[2]
 
         prob_dict_a = evt_predict(data=training_a,
-                                     shape=shape_b,
-                                     loc=loc_b,
-                                     scale=scale_b,
-                                     distribution="weibull")
+                                 shape=shape_b,
+                                 loc=loc_b,
+                                 scale=scale_b,
+                                 distribution="weibull")
 
         prob_dict_b = evt_predict(data=training_b,
-                                     shape=shape_b,
-                                     loc=loc_b,
-                                     scale=scale_b,
-                                     distribution="weibull")
+                                 shape=shape_b,
+                                 loc=loc_b,
+                                 scale=scale_b,
+                                 distribution="weibull")
 
 
         prob_dict_test = evt_predict(data=testing,
@@ -540,45 +545,57 @@ def evt_model(data_dir,
         prob_dict = {**prob_dict_a, **prob_dict_b, **prob_dict_test}
         prob_dict = dict(sorted(prob_dict.items()))
 
-    print(prob_dict)
-    print(shape_b, scale_b, loc_b)
+    # print(prob_dict)
+    # print(shape_b, scale_b, loc_b)
 
     return prob_dict
 
 
 
 
-def plot_prob_curve(gaussian_prob,
-                    evt_prob,
-                    tail_choice,
-                    tail_ratio,
-                    human_data,
-                    save_fig_dir,
-                    sampling,
-                    params=None,
-                    model=model_name):
+def plot_prob_curve(save_fig_dir,
+                    params,
+                    model,
+                    gaussian_prob_uniform,
+                    gaussian_prob_enrich,
+                    evt_prob_uniform,
+                    evt_prob_enrich,
+                    human_data_uniform,
+                    human_data_enrich,):
     """
 
     :param prob:
     :return:
     """
-    list_gauss = sorted(gaussian_prob.items())
-    x_gauss, y_gauss = zip(*list_gauss)
+    # Gaussian probabilities for uniform and enriched tail
+    list_gauss_uniform = sorted(gaussian_prob_uniform.items())
+    x_gauss_uniform, y_gauss_uniform = zip(*list_gauss_uniform)
 
-    list_evt = sorted(evt_prob.items())
-    x_evt, y_evt = zip(*list_evt)
+    list_gauss_enrich = sorted(gaussian_prob_enrich.items())
+    x_gauss_enrich, y_gauss_enrich = zip(*list_gauss_enrich)
 
-    plt.plot(x_gauss, y_gauss, "-b", label="Gauss")
-    plt.plot(x_gauss, y_evt, "-r", label="EVT")
-    plt.plot(x_gauss, human_data , "-g", label="Human")
+    # EVT probabilities for uniform and enriched tail
+    list_evt_uniform = sorted(evt_prob_uniform.items())
+    x_evt_uniform, y_evt_uniform = zip(*list_evt_uniform)
 
-    plt.legend(loc="upper left")
+    list_evt_enrich = sorted(evt_prob_enrich.items())
+    x_evt_enrich, y_evt_enrich = zip(*list_evt_enrich)
+
+    # Plot 6 curves
+    plt.plot(x_gauss_uniform, y_gauss_uniform, label="Gaussain Uniform")
+    plt.plot(x_gauss_uniform, y_gauss_enrich, label="Gaussain Enriched Tail")
+    plt.plot(x_gauss_uniform, y_evt_uniform, label="EVT Uniform")
+    plt.plot(x_gauss_uniform, y_evt_enrich, label="EVT Enriched Tail")
+    plt.plot(human_test_ind, human_data_uniform , label="Human Uniform")
+    plt.plot(human_test_ind, human_data_enrich , label="Human Enriched Tail")
+
+    plt.legend(loc="lower right")
 
     if not os.path.isdir(os.path.join(save_fig_dir, model)):
         os.mkdir(os.path.join(save_fig_dir, model))
 
-    save_fig_path = save_fig_dir + "/" + model + "/" + str(sampling) + "_tail_side_" + \
-                    str(tail_choice) + "_tail_ratio_" + str(params[-1]) + "_shape_" + str(params[0]) + \
+    save_fig_path = save_fig_dir + "/" + model + "/tail_ratio_" + str(params[-1]) + \
+                    "_shape_" + str(params[0]) + \
                     "_scale_" + str(params[1]) + "_loc_" + str(params[2]) + ".png"
 
     plt.savefig(save_fig_path)
@@ -588,7 +605,8 @@ def plot_prob_curve(gaussian_prob,
 
 
 if __name__ == "__main__":
-    # TODO: Data Sampling - only need to run this when sampling parameters are changed
+    # TODO: Data Sampling - only need to run this again
+    #  when sampling parameters are changed
     # sampling(csv_path=uniform_csv_path,
     #          frame_index=all_frames_uniform,
     #          nb_training=nb_training,
@@ -610,7 +628,7 @@ if __name__ == "__main__":
     #          model_name=model_name,
     #          sampling_method="long_tail")
 
-    # Gaussian probabilities
+    # TODO: Gaussian probabilities
     gaussian_prob_uniform, stats_uniform = gaussian_naive_bayes(data_dir=uniform_data_dir)
     print("Uniform Gaussian prob from sklearn:")
     print(gaussian_prob_uniform)
@@ -619,42 +637,59 @@ if __name__ == "__main__":
     print("Enriched tail Gaussian prob from sklearn:")
     print(gaussian_prob_enrich)
 
-    # # EVT probabilities
-    # """
-    # Grid search for best parameter combos.
-    # First round is a rough search. Use the same parameters for all setups
-    # """
-    # shape = np.arange(0.25, 0.35, 0.01).tolist()
-    # shape = [round(item, 3) for item in shape]
-    #
-    # scale = np.arange(1.0, 1.2, 0.5).tolist()
-    # scale = [round(item, 3) for item in scale]
-    #
-    # location = np.arange(50, 55, 0.5).tolist()
-    # location = [round(item, 1) for item in location]
-    #
-    # # print(len(shape), len(scale), len(location))
-    #
-    # tail_ratio = [0.1, 0.2, 0.3, 0.4, 0.5]
-    #
-    # all_params = list(itertools.product(*[shape, scale, location, tail_ratio]))
-    # print(len(all_params))
-    # # print(all_params[0])
-    #
-    # for one_param in all_params:
-    #     evt_prob = evt_model(data_dir=data_dir,
-    #                          distribution="weibull",
-    #                          tail_ratio=one_param[-1],
-    #                          tail_type=tail_type,
-    #                          params=one_param,
-    #                          fit_curve=False)
-    #
-    #     # # Plot Gaussian and EVT in one figure
-    #     plot_prob_curve(gaussian_prob=gaussian_prob,
-    #                     evt_prob=evt_prob,
-    #                     tail_choice=tail_type,
-    #                     tail_ratio=one_param[-1],
-    #                     human_data=human,
-    #                     sampling=sampling_method,
-    #                     save_fig_dir=save_fig_base,
-    #                     params=one_param)
+    # TODO: EVT probabilities
+    """
+    Grid search for best parameter combos.
+    First round is a rough search. Use the same parameters for all setups
+    """
+    # First round
+    # shape = np.arange(0.1, 0.6, 0.1).tolist()
+    # scale = np.arange(1.0, 2.0, 0.1).tolist()
+    # location = np.arange(50, 70, 2).tolist()
+
+    # Second round
+    shape = np.arange(0.1, 2.0, 0.1).tolist()
+    scale = np.arange(0.1, 2.0, 0.1).tolist()
+    location = np.arange(2, 100, 2).tolist()
+
+    # print(len(shape), len(scale), len(location))
+    tail_ratio = [0.1, 0.2, 0.3, 0.4, 0.5]
+
+    shape = [round(item, 3) for item in shape]
+    scale = [round(item, 3) for item in scale]
+    location = [round(item, 1) for item in location]
+
+    all_params = list(itertools.product(*[shape, scale, location, tail_ratio]))
+    print(len(all_params))
+    # print(all_params[0])
+    # sys.exit()
+
+    for one_param in all_params:
+        # EVT Uniform
+        evt_prob_uniform = evt_model(data_dir=uniform_data_dir,
+                                     distribution="weibull",
+                                     tail_ratio=one_param[-1],
+                                     tail_type=None,
+                                     params=one_param,
+                                     fit_curve=False)
+
+        # EVT Enriched Tail
+        evt_prob_enrich = evt_model(data_dir=enriched_tail_data_dir,
+                                     distribution="weibull",
+                                     tail_ratio=one_param[-1],
+                                     tail_type=None,
+                                     params=one_param,
+                                     fit_curve=False)
+
+        # Plot Gaussian and EVT in one figure
+        plot_prob_curve(gaussian_prob_uniform=gaussian_prob_uniform,
+                        gaussian_prob_enrich=gaussian_prob_enrich,
+                        evt_prob_uniform=evt_prob_uniform,
+                        evt_prob_enrich=evt_prob_enrich,
+                        human_data_uniform=human_uniform_prob,
+                        human_data_enrich=human_enrich_prob,
+                        save_fig_dir=save_fig_base,
+                        params=one_param,
+                        model=model_name)
+
+        # sys.exit()

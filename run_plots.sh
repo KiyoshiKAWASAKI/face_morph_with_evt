@@ -3,7 +3,7 @@
 #$ -M jhuang24@nd.edu
 #$ -m abe
 #$ -q long
-#$ -N evt_vgg_long_tail_refined
+#$ -N vgg-resnet
 
 # Required modules
 module load conda
