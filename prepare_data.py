@@ -11,6 +11,7 @@ save_data_path = "/afs/crc.nd.edu/group/cvrl/scratch_49/jhuang24/" \
 train_uniform_a_frames = [1, 2, 4, 5, 6]
 train_uniform_b_frames = [86, 101, 111, 121, 132]
 train_enrich_b_frames = [84, 86, 87, 100, 142]
+train_long_b_frames = [140, 141, 142]
 
 
 testing_frames = [36, 38, 40, 42, 45,
@@ -24,6 +25,7 @@ def process_morph_data(source_path,
                        class_a_frames,
                        uniform_b_frames,
                        enrich_b_frames,
+                       long_b_frame,
                        testing_frames):
     """
     For each morph sequence, only select the frames that have human data.
@@ -48,12 +50,16 @@ def process_morph_data(source_path,
         #     os.mkdir(target_save_folder)
 
         # Make directories for training and testing frames
-        target_uniform_folder = os.path.join(target_save_folder, "uniform")
+        # target_uniform_folder = os.path.join(target_save_folder, "uniform")
         # os.mkdir(target_uniform_folder)
-        target_enrich_folder = os.path.join(target_save_folder, "enriched_tail")
+        # target_enrich_folder = os.path.join(target_save_folder, "enriched_tail")
         # os.mkdir(target_enrich_folder)
 
-        # A => uniform and enriched tail
+        target_long_tail_folder = os.path.join(target_save_folder, "long_tail")
+        os.mkdir(target_long_tail_folder)
+
+        # A => uniform, enriched tail and long tail
+        """
         for one_frame in class_a_frames:
             frame_name = str(one_frame).zfill(4)
             frame_name = "morph_img_" + frame_name + ".jpg"
@@ -71,40 +77,65 @@ def process_morph_data(source_path,
             src = os.path.join(one_morph_folder, frame_name)
             dst = os.path.join(target_enrich_folder, frame_name)
             shutil.copyfile(src, dst)
+        """
+        for one_frame in class_a_frames:
+            frame_name = str(one_frame).zfill(4)
+            frame_name = "morph_img_" + frame_name + ".jpg"
+
+            src = os.path.join(one_morph_folder, frame_name)
+            dst = os.path.join(target_long_tail_folder, frame_name)
+            shutil.copyfile(src, dst)
 
         # Uniform B => uniform
-        for one_frame in uniform_b_frames:
-            frame_name = str(one_frame).zfill(4)
-            frame_name = "morph_img_" + frame_name + ".jpg"
-
-            src = os.path.join(one_morph_folder, frame_name)
-            dst = os.path.join(target_uniform_folder, frame_name)
-            shutil.copyfile(src, dst)
+        # for one_frame in uniform_b_frames:
+        #     frame_name = str(one_frame).zfill(4)
+        #     frame_name = "morph_img_" + frame_name + ".jpg"
+        #
+        #     src = os.path.join(one_morph_folder, frame_name)
+        #     dst = os.path.join(target_uniform_folder, frame_name)
+        #     shutil.copyfile(src, dst)
 
         # Enriched B => enriched tail
-        for one_frame in enrich_b_frames:
+        # for one_frame in enrich_b_frames:
+        #     frame_name = str(one_frame).zfill(4)
+        #     frame_name = "morph_img_" + frame_name + ".jpg"
+        #
+        #     src = os.path.join(one_morph_folder, frame_name)
+        #     dst = os.path.join(target_enrich_folder, frame_name)
+        #     shutil.copyfile(src, dst)
+
+        # Long tail B => long tail
+        for one_frame in long_b_frame:
             frame_name = str(one_frame).zfill(4)
             frame_name = "morph_img_" + frame_name + ".jpg"
 
             src = os.path.join(one_morph_folder, frame_name)
-            dst = os.path.join(target_enrich_folder, frame_name)
+            dst = os.path.join(target_long_tail_folder, frame_name)
             shutil.copyfile(src, dst)
 
-        # Test => uniform and enriched tail
+        # Test => uniform, enriched tail and long tail
+        # for one_frame in testing_frames:
+        #     frame_name = str(one_frame).zfill(4)
+        #     frame_name = "morph_img_" + frame_name + ".jpg"
+        #
+        #     src = os.path.join(one_morph_folder, frame_name)
+        #     dst = os.path.join(target_uniform_folder, frame_name)
+        #     shutil.copyfile(src, dst)
+        #
+        # for one_frame in testing_frames:
+        #     frame_name = str(one_frame).zfill(4)
+        #     frame_name = "morph_img_" + frame_name + ".jpg"
+        #
+        #     src = os.path.join(one_morph_folder, frame_name)
+        #     dst = os.path.join(target_enrich_folder, frame_name)
+        #     shutil.copyfile(src, dst)
+
         for one_frame in testing_frames:
             frame_name = str(one_frame).zfill(4)
             frame_name = "morph_img_" + frame_name + ".jpg"
 
             src = os.path.join(one_morph_folder, frame_name)
-            dst = os.path.join(target_uniform_folder, frame_name)
-            shutil.copyfile(src, dst)
-
-        for one_frame in testing_frames:
-            frame_name = str(one_frame).zfill(4)
-            frame_name = "morph_img_" + frame_name + ".jpg"
-
-            src = os.path.join(one_morph_folder, frame_name)
-            dst = os.path.join(target_enrich_folder, frame_name)
+            dst = os.path.join(target_long_tail_folder, frame_name)
             shutil.copyfile(src, dst)
 
 
@@ -119,4 +150,5 @@ if __name__ == "__main__":
                            class_a_frames=train_uniform_a_frames,
                            uniform_b_frames=train_uniform_b_frames,
                            enrich_b_frames=train_enrich_b_frames,
+                           long_b_frame=train_long_b_frames,
                            testing_frames=testing_frames)

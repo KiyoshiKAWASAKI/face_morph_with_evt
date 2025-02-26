@@ -16,6 +16,7 @@ import itertools
 model_name = "vggface_resnet"
 uniform_csv_path = "/project01/cvrl/jhuang24/face_morph_v4_5_sets_dist/vgg_resnet_enriched_tail.csv"
 enrich_csv_path = "/project01/cvrl/jhuang24/face_morph_v4_5_sets_dist/vgg_resnet_uniform.csv"
+long_tail_csv_path =
 
 # TODO: VGG-Face VGG-16
 # model_name = "vggface_vgg16"
@@ -78,6 +79,14 @@ human_enrich_prob = [0.119048, 0.062907, 0.075922, 0.097614, 0.132321,
                      0.201735, 0.288503, 0.392625, 0.496746, 0.613883,
                      0.722343, 0.800434, 0.872017, 0.924078, 0.952278,
                      0.952278, 0.958696, 0.976087, 0.973913, 0.980435]
+
+human_long_prob = [0.06572769953051644, 0.018823529411764704, 0.009411764705882352,
+                   0.011764705882352941, 0.02358490566037736, 0.030660377358490566,
+                   0.04245283018867924, 0.0589622641509434, 0.09669811320754718,
+                   0.12028301886792453, 0.18632075471698112, 0.2169811320754717,
+                   0.2783018867924528, 0.33490566037735847, 0.42924528301886794,
+                   0.5047169811320755, 0.5825471698113207, 0.6279620853080569,
+                   0.7156398104265402, 0.7535545023696683]
 
 
 
@@ -168,8 +177,6 @@ def sampling(csv_path,
     """
     # Load distance CSV into data frame
     data = pd.read_csv(csv_path, delimiter=',')
-
-    # TODO: might need to add extra steps for Deeksha's data - JH
 
     # Find training frames for A and B, and frames in the gap
     training_frame_for_A = frame_index[:nb_training]
