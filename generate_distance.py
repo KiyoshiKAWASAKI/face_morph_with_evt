@@ -93,16 +93,15 @@ def process_feature_files(feature_dir,
 
 
 def gen_distance_csv(feature_dir,
-                     save_result_path,
-                     person_a_ind,
-                     person_b_ind):
+                     save_result_path):
     """
 
     :param feature:
     :param save_result_path:
     :return:
     """
-    all_models = os.listdir(feature_dir)
+    # all_models = os.listdir(feature_dir)
+    all_models = ['vgg_resnet']
 
     """
     print("All models: ", all_models)
@@ -112,8 +111,10 @@ def gen_distance_csv(feature_dir,
 
     # For each morph, precess each frame
     for one_model in all_models:
-        all_config = os.listdir(os.path.join(feature_dir, one_model))
+        # all_config = os.listdir(os.path.join(feature_dir, one_model))
         # print(all_config) # ['enriched_tail', 'uniform']
+
+        all_config = ['long_tail']
 
         for one_config in all_config:
             print("Dir: ", os.path.join(feature_dir, one_model, one_config))
@@ -160,6 +161,4 @@ def gen_distance_csv(feature_dir,
 
 if __name__ == "__main__":
     gen_distance_csv(feature_dir=feature_dir,
-                     save_result_path=save_csv_path,
-                     person_a_ind=person_A_ind,
-                     person_b_ind=person_B_ind)
+                     save_result_path=save_csv_path)
