@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="972204b1-d771-476c-9168-32994b0853a0" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/generate_distance.py" beforeDir="false" afterPath="$PROJECT_DIR$/generate_distance.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sampling.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modeling.py" beforeDir="false" afterPath="$PROJECT_DIR$/modeling.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,8 +17,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/modeling.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-28">
-              <caret line="18" column="20" selection-start-line="18" selection-start-column="20" selection-end-line="18" selection-end-column="20" />
+            <state relative-caret-position="4261">
+              <caret line="603" column="26" lean-forward="true" selection-start-line="603" selection-start-column="26" selection-end-line="603" selection-end-column="26" />
               <folding>
                 <element signature="e#1#15#0" expanded="true" />
                 <element signature="e#3420#5883#0" />
@@ -25,22 +27,13 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/run_plots.sh">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="5" column="16" selection-start-line="5" selection-start-column="16" selection-end-line="5" selection-end-column="16" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/generate_distance.py">
+        <entry file="file://$PROJECT_DIR$/sampling.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="103" column="30" lean-forward="true" selection-start-line="103" selection-start-column="30" selection-end-line="103" selection-end-column="30" />
+            <state relative-caret-position="275">
+              <caret line="108" lean-forward="true" selection-start-line="108" selection-end-line="108" />
               <folding>
-                <element signature="e#0#18#0" expanded="true" />
+                <element signature="e#0#14#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -64,6 +57,8 @@
       <find>tail</find>
       <find>tail_type</find>
       <find>x2</find>
+      <find>uniform_data_dir</find>
+      <find>save_sample_path</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -79,9 +74,10 @@
         <option value="$PROJECT_DIR$/human_plot.py" />
         <option value="$PROJECT_DIR$/run_plots.sh" />
         <option value="$PROJECT_DIR$/plot_nsf.py" />
-        <option value="$PROJECT_DIR$/modeling.py" />
         <option value="$PROJECT_DIR$/prepare_data.py" />
         <option value="$PROJECT_DIR$/generate_distance.py" />
+        <option value="$PROJECT_DIR$/modeling.py" />
+        <option value="$PROJECT_DIR$/sampling.py" />
       </list>
     </option>
   </component>
@@ -171,13 +167,13 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="203557000" />
+    <option name="totallyTimeSpent" value="211086000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1080" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13631523" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.08945687" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -191,7 +187,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="File Transfer" order="9" weight="0.31287128" />
       <window_info anchor="bottom" id="Database Changes" order="10" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.21386139" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.08316832" />
       <window_info anchor="bottom" id="Event Log" order="12" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="13" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -253,13 +249,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/run_plots.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="5" column="16" selection-start-line="5" selection-start-column="16" selection-end-line="5" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/human_plot.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="384">
@@ -280,10 +269,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/generate_distance.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="555">
+          <caret line="103" column="30" lean-forward="true" selection-start-line="103" selection-start-column="30" selection-end-line="103" selection-end-column="30" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run_plots.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="5" column="16" selection-start-line="5" selection-start-column="16" selection-end-line="5" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/modeling.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-28">
-          <caret line="18" column="20" selection-start-line="18" selection-start-column="20" selection-end-line="18" selection-end-column="20" />
+        <state relative-caret-position="4261">
+          <caret line="603" column="26" lean-forward="true" selection-start-line="603" selection-start-column="26" selection-end-line="603" selection-end-column="26" />
           <folding>
             <element signature="e#1#15#0" expanded="true" />
             <element signature="e#3420#5883#0" />
@@ -291,12 +297,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/generate_distance.py">
+    <entry file="file://$PROJECT_DIR$/sampling.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="103" column="30" lean-forward="true" selection-start-line="103" selection-start-column="30" selection-end-line="103" selection-end-column="30" />
+        <state relative-caret-position="275">
+          <caret line="108" lean-forward="true" selection-start-line="108" selection-end-line="108" />
           <folding>
-            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#0#14#0" expanded="true" />
           </folding>
         </state>
       </provider>

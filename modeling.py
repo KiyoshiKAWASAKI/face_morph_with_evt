@@ -10,40 +10,26 @@ from matplotlib.pyplot import figure
 import itertools
 
 #####################################################
-# Adjustable params
+# Switch to do this on my local laptop
 #####################################################
-# TODO: VGG-Face ResNet
-model_name = "vggface_resnet"
-uniform_csv_path = "/project01/cvrl/jhuang24/face_morph_v4_5_sets_dist/vgg_resnet_enriched_tail.csv"
-enrich_csv_path = "/project01/cvrl/jhuang24/face_morph_v4_5_sets_dist/vgg_resnet_uniform.csv"
-long_tail_csv_path =
-
-# TODO: VGG-Face VGG-16
-# model_name = "vggface_vgg16"
-# uniform_csv_path = "/project01/cvrl/jhuang24/face_morph_v4_5_sets_dist/vgg_vgg16_uniform.csv"
-# enrich_csv_path = "/project01/cvrl/jhuang24/face_morph_v4_5_sets_dist/vgg_vgg16_enriched_tail.csv"
-
-# TODO: VGG-Face SE-Net
-# model_name = "vggface_senet"
-# uniform_csv_path = "/project01/cvrl/jhuang24/face_morph_v4_5_sets_dist/vgg_senet_uniform.csv"
-# enrich_csv_path = "/project01/cvrl/jhuang24/face_morph_v4_5_sets_dist/vgg_senet_enriched_tail.csv"
-#
-
 sampling_ratio = 0.9
 
+# TODO: VGG-Face ResNet
+model_name = "vggface_resnet"
+uniform_csv_path = "/Users/kiyoshi/Desktop/jov_everything/face_morph_v4_5_sets_dist/vgg_resnet_uniform.csv"
+enrich_csv_path = "/Users/kiyoshi/Desktop/jov_everything/face_morph_v4_5_sets_dist/vgg_resnet_enriched_tail.csv"
+long_tail_csv_path = "/Users/kiyoshi/Desktop/jov_everything/face_morph_v4_5_sets_dist/vgg_resnet_long_tail.csv"
 
-uniform_data_dir = "/project01/cvrl/jhuang24/face_morph_v4_5_sets_modeling/" \
+
+uniform_data_dir = "/Users/kiyoshi/Desktop/jov_everything/face_morph_v4_5_sets_modeling_with_3_samplings/" \
                    "vggface_resnet_uniform_nb_train_5_ratio_0.9_tail_weight_0.4"
 
-enriched_tail_data_dir = "/project01/cvrl/jhuang24/face_morph_v4_5_sets_modeling/" \
+enriched_tail_data_dir = "/Users/kiyoshi/Desktop/jov_everything/face_morph_v4_5_sets_modeling_with_3_samplings/" \
                          "vggface_resnet_enriched_tail_nb_train_5_ratio_0.9_tail_weight_0.4"
 
-long_tail_data_dir = "/project01/cvrl/jhuang24/face_morph_v4_5_sets_modeling/" \
+long_tail_data_dir = "/Users/kiyoshi/Desktop/jov_everything/face_morph_v4_5_sets_modeling_with_3_samplings/" \
                      "vggface_resnet_long_tail_nb_train_5_ratio_0.9_tail_weight_0.4"
 
-
-# tail_type = "right"
-# tail_type = "left"
 
 #####################################################
 # Fixed params
@@ -157,111 +143,111 @@ def plot_original_samples(csv_path,
 
 
 
-def sampling(csv_path,
-             frame_index,
-             nb_training,
-             sampling_ratio,
-             sampling_method,
-             model_name,
-             tail_weight=0.4):
-    """
-
-    :param csv_path:
-    :param frame_index:
-    :param nb_training: ideally, choose among 3, 4, and 5
-    :param sampling_ratio:
-    :param sampling_method: uniform, enriched_tail and long_tail
-    :param tail_weight: how much to sample from the tail(s)
-
-    :return: 3 data frames for class A, class B and gap, respectively
-    """
-    # Load distance CSV into data frame
-    data = pd.read_csv(csv_path, delimiter=',')
-
-    # Find training frames for A and B, and frames in the gap
-    training_frame_for_A = frame_index[:nb_training]
-    training_frame_for_B = frame_index[-nb_training:]
-    testing_frame = list(set(frame_index) - set(training_frame_for_A) - set(training_frame_for_B))
-
-    # Reset column names
-    data = data[["0", "1", "2", "3"]]
-    data.columns = ['morph_name', 'frame', 'distance_to_A', 'distance_to_B']
-
-    # Find rows for training and testing
-    training_data_A = data.loc[data['frame'].isin(training_frame_for_A)]
-    training_data_B = data.loc[data['frame'].isin(training_frame_for_B)]
-    testing_data = data.loc[data['frame'].isin(testing_frame)]
-
-    assert training_data_A.shape[0] + training_data_B.shape[0] + testing_data.shape[0] == data.shape[0]
-
-    """
-    Sampling class A:
-        Calculate number of samples
-        Shuffle the data and take sample
-        Note: Always use the same distribution
-    """
-    nb_training_sample = int(training_data_A.shape[0] * sampling_ratio)
-    sample_A = training_data_A.sample(nb_training_sample)
-
-    # For class B, it differs for each sampling method
-    if sampling_method == "uniform":
-        sample_B = training_data_B.sample(nb_training_sample)
-
-    elif sampling_method == "enriched_tail":
-        # Find number of samples for the enriched tails.
-        nb_sample_head = int(nb_training_sample * tail_weight)
-        nb_sample_tail = nb_sample_head
-        nb_sample_middle = nb_training_sample - nb_sample_head - nb_sample_tail
-
-        # Sort all the samples by distance to A
-        training_data_B = training_data_B.sort_values('distance_to_A')
-        training_data_B_sampled = training_data_B.sample(nb_training_sample)
-
-        # Then do the sampling
-        head_samples = training_data_B_sampled.head(nb_sample_head)
-        tail_samples = training_data_B_sampled.tail(nb_sample_tail)
-        middle_samples = training_data_B_sampled[nb_sample_head:-nb_sample_tail].sample(nb_sample_middle)
-
-        # Combine 3 dataframes
-        sample_B = pd.concat([head_samples, middle_samples, tail_samples], ignore_index=True)
-
-    elif sampling_method == "long_tail":
-        # Find number of samples for the long tail.
-        nb_sample_tail = int(nb_training_sample * tail_weight)
-        nb_sample_middle = nb_training_sample - nb_sample_tail
-
-        # Sort values
-        training_data_B = training_data_B.sort_values('distance_to_A')
-        training_data_B_sampled = training_data_B.sample(nb_training_sample)
-
-        # Find all samples for each part
-        tail_samples = training_data_B_sampled.tail(nb_sample_tail)
-        middle_samples =training_data_B_sampled[:-nb_sample_tail].sample(nb_sample_middle)
-
-        # Combine 2 dataframes
-        sample_B = pd.concat([middle_samples, tail_samples], ignore_index=True)
-
-    else:
-        sample_B = None
-
-    # TODO: Testing samples - use all of them? -JH -> Yup
-
-    if sample_B is not None:
-        # To make sure all models can use the same set of sampled data, save these samples
-        sub_folder = model_name + "_" + sampling_method + "_nb_train_" + str(nb_training) + "_ratio_" + \
-                     str(sampling_ratio) + "_tail_weight_" + str(tail_weight)
-        target_dir = os.path.join(save_sample_path, sub_folder)
-
-        if not os.path.isdir(target_dir):
-            os.mkdir(target_dir)
-
-        # Save samples to target directory
-        sample_A.to_csv(os.path.join(target_dir, "sample_a.csv"))
-        sample_B.to_csv(os.path.join(target_dir, "sample_b.csv"))
-        testing_data.to_csv(os.path.join(target_dir, "test_samples.csv"))
-
-    else:
-        raise Exception("Empty sample for class B. Sampling methods supported are: uniform, enriched_tail and long_tail.")
+# def sampling(csv_path,
+#              frame_index,
+#              nb_training,
+#              sampling_ratio,
+#              sampling_method,
+#              model_name,
+#              tail_weight=0.4):
+#     """
+#
+#     :param csv_path:
+#     :param frame_index:
+#     :param nb_training: ideally, choose among 3, 4, and 5
+#     :param sampling_ratio:
+#     :param sampling_method: uniform, enriched_tail and long_tail
+#     :param tail_weight: how much to sample from the tail(s)
+#
+#     :return: 3 data frames for class A, class B and gap, respectively
+#     """
+#     # Load distance CSV into data frame
+#     data = pd.read_csv(csv_path, delimiter=',')
+#
+#     # Find training frames for A and B, and frames in the gap
+#     training_frame_for_A = frame_index[:nb_training]
+#     training_frame_for_B = frame_index[-nb_training:]
+#     testing_frame = list(set(frame_index) - set(training_frame_for_A) - set(training_frame_for_B))
+#
+#     # Reset column names
+#     data = data[["0", "1", "2", "3"]]
+#     data.columns = ['morph_name', 'frame', 'distance_to_A', 'distance_to_B']
+#
+#     # Find rows for training and testing
+#     training_data_A = data.loc[data['frame'].isin(training_frame_for_A)]
+#     training_data_B = data.loc[data['frame'].isin(training_frame_for_B)]
+#     testing_data = data.loc[data['frame'].isin(testing_frame)]
+#
+#     assert training_data_A.shape[0] + training_data_B.shape[0] + testing_data.shape[0] == data.shape[0]
+#
+#     """
+#     Sampling class A:
+#         Calculate number of samples
+#         Shuffle the data and take sample
+#         Note: Always use the same distribution
+#     """
+#     nb_training_sample = int(training_data_A.shape[0] * sampling_ratio)
+#     sample_A = training_data_A.sample(nb_training_sample)
+#
+#     # For class B, it differs for each sampling method
+#     if sampling_method == "uniform":
+#         sample_B = training_data_B.sample(nb_training_sample)
+#
+#     elif sampling_method == "enriched_tail":
+#         # Find number of samples for the enriched tails.
+#         nb_sample_head = int(nb_training_sample * tail_weight)
+#         nb_sample_tail = nb_sample_head
+#         nb_sample_middle = nb_training_sample - nb_sample_head - nb_sample_tail
+#
+#         # Sort all the samples by distance to A
+#         training_data_B = training_data_B.sort_values('distance_to_A')
+#         training_data_B_sampled = training_data_B.sample(nb_training_sample)
+#
+#         # Then do the sampling
+#         head_samples = training_data_B_sampled.head(nb_sample_head)
+#         tail_samples = training_data_B_sampled.tail(nb_sample_tail)
+#         middle_samples = training_data_B_sampled[nb_sample_head:-nb_sample_tail].sample(nb_sample_middle)
+#
+#         # Combine 3 dataframes
+#         sample_B = pd.concat([head_samples, middle_samples, tail_samples], ignore_index=True)
+#
+#     elif sampling_method == "long_tail":
+#         # Find number of samples for the long tail.
+#         nb_sample_tail = int(nb_training_sample * tail_weight)
+#         nb_sample_middle = nb_training_sample - nb_sample_tail
+#
+#         # Sort values
+#         training_data_B = training_data_B.sort_values('distance_to_A')
+#         training_data_B_sampled = training_data_B.sample(nb_training_sample)
+#
+#         # Find all samples for each part
+#         tail_samples = training_data_B_sampled.tail(nb_sample_tail)
+#         middle_samples =training_data_B_sampled[:-nb_sample_tail].sample(nb_sample_middle)
+#
+#         # Combine 2 dataframes
+#         sample_B = pd.concat([middle_samples, tail_samples], ignore_index=True)
+#
+#     else:
+#         sample_B = None
+#
+#     # TODO: Testing samples - use all of them? -JH -> Yup
+#
+#     if sample_B is not None:
+#         # To make sure all models can use the same set of sampled data, save these samples
+#         sub_folder = model_name + "_" + sampling_method + "_nb_train_" + str(nb_training) + "_ratio_" + \
+#                      str(sampling_ratio) + "_tail_weight_" + str(tail_weight)
+#         target_dir = os.path.join(save_sample_path, sub_folder)
+#
+#         if not os.path.isdir(target_dir):
+#             os.mkdir(target_dir)
+#
+#         # Save samples to target directory
+#         sample_A.to_csv(os.path.join(target_dir, "sample_a.csv"))
+#         sample_B.to_csv(os.path.join(target_dir, "sample_b.csv"))
+#         testing_data.to_csv(os.path.join(target_dir, "test_samples.csv"))
+#
+#     else:
+#         raise Exception("Empty sample for class B. Sampling methods supported are: uniform, enriched_tail and long_tail.")
 
 
 
