@@ -6,7 +6,9 @@ from math import sqrt, exp, pi
 from sklearn.naive_bayes import GaussianNB
 from scipy.stats import weibull_min, weibull_max, genextreme
 import itertools
-
+import pprint
+import warnings
+warnings.filterwarnings('ignore')
 
 
 all_frames_uniform = [1, 2, 4, 5, 6, 36, 38, 40, 42, 45,
@@ -68,6 +70,7 @@ def evt_predict(data,
             sample_w_frame["distance_to_B"] = max_value - sample_w_frame["distance_to_B"]
 
     frames = sample_w_frame['frame'].unique()
+    print(frames)
 
     prob_dict = {}
     prob_one_frame = []
@@ -79,6 +82,8 @@ def evt_predict(data,
             dist = frames["distance_to_A"].tolist()
         else:
             dist = frames["distance_to_B"].tolist()
+
+        print(one_frame, mean(dist))
 
         for one_dist in dist:
             # Always use CDF for weibull and reverse weibull
@@ -155,9 +160,14 @@ def evt_model(training_a_data_path,
         nb_sample = int(tail_ratio * training_data_b.shape[0])
         print("nb_sample for B: ", nb_sample)
 
+        # Take "tail" samples
+        if distance_choice == "to_A":
+            data_for_b = training_data_b[:nb_sample]
+        else:
+            data_for_b = training_data_b[-nb_sample:]
+
         # EVT Uniform
         if sampling == "uniform":
-            data_for_b = training_data_b[:nb_sample]
             # Use only a part of the data to fit EVT
             prob_dict_b = evt_predict(data=data_for_b,
                                       shape=shape_b,
@@ -170,12 +180,6 @@ def evt_model(training_a_data_path,
 
         # EVT enriched tail
         elif sampling == "enrich_tail":
-            # Use tail type to decide what samples we are taking
-            data_for_b_left = training_data_b[:int(0.5 * nb_sample)]
-            data_for_b_right = training_data_b[-int(0.5 * nb_sample):]
-            frames = [data_for_b_left, data_for_b_right]
-            data_for_b = pd.concat(frames)
-
             prob_dict_b = evt_predict(data=data_for_b,
                                       shape=shape_b,
                                       loc=loc_b,
@@ -186,9 +190,6 @@ def evt_model(training_a_data_path,
 
         # EVT long tail (new)
         elif sampling == "long_tail":
-            # First, calculate how many samples we will use based on tail size
-            data_for_b = training_data_b[-nb_sample:]
-
             prob_dict_b = evt_predict(data=data_for_b,
                                       shape=shape_b,
                                       loc=loc_b,
@@ -216,41 +217,75 @@ def evt_model(training_a_data_path,
 
 
 if __name__ == "__main__":
-    # Use data that is not shuffled
-    class_a_uniform_path = "/Users/kiyoshi/Desktop/jov_everything/face_morph_v4_5_sets_modeling_with_3_samplings/" \
+    class_a_uniform_path = "/Users/jh5442/Desktop/jov_everything/face_morph_v4_5_sets_modeling_with_3_samplings/" \
                            "sampled_data_0227/EVT/sample_a.csv"
-    class_b_uniform_path = "/Users/kiyoshi/Desktop/jov_everything/face_morph_v4_5_sets_modeling_with_3_samplings/" \
-                           "sampled_data_0227/EVT/sample_b_uniform_use_for_both_ab.csv"
 
-    class_b_enrich_dist_to_a_path = "/Users/kiyoshi/Desktop/jov_everything/face_morph_v4_5_sets_modeling_with_3_samplings/" \
+    """
+    Note:
+    Both distance to A and B are sorted in increasing order.
+    When fitting with distance to A, we can use it directly.
+    When fitting with distance to B, we need to flip the distance values.
+    """
+    class_b_uniform_dist_to_a_path = "/Users/jh5442/Desktop/jov_everything/face_morph_v4_5_sets_modeling_with_3_samplings/" \
+                                        "sampled_data_0227/EVT/sample_b_uniform_sort_by_distance_to_a.csv"
+    class_b_uniform_dist_to_b_path = "/Users/jh5442/Desktop/jov_everything/face_morph_v4_5_sets_modeling_with_3_samplings/" \
+                                        "sampled_data_0227/EVT/sample_b_uniform_sort_by_distance_to_b.csv"
+
+    class_b_enrich_dist_to_a_path = "/Users/jh5442/Desktop/jov_everything/face_morph_v4_5_sets_modeling_with_3_samplings/" \
                                     "sampled_data_0227/EVT/sample_b_enrich_sort_by_distance_to_a.csv"
-    class_b_enrich_dist_to_b_path = "/Users/kiyoshi/Desktop/jov_everything/face_morph_v4_5_sets_modeling_with_3_samplings/" \
+    class_b_enrich_dist_to_b_path = "/Users/jh5442/Desktop/jov_everything/face_morph_v4_5_sets_modeling_with_3_samplings/" \
                                     "sampled_data_0227/EVT/sample_b_enrich_sort_by_distance_to_b.csv"
 
-    class_b_long_dist_to_a_path = "/Users/kiyoshi/Desktop/jov_everything/face_morph_v4_5_sets_modeling_with_3_samplings/" \
+    class_b_long_dist_to_a_path = "/Users/jh5442/Desktop/jov_everything/face_morph_v4_5_sets_modeling_with_3_samplings/" \
                                   "sampled_data_0227/EVT/sample_b_long_sort_by_distance_to_a.csv"
-    class_b_long_dist_to_b_path = "/Users/kiyoshi/Desktop/jov_everything/face_morph_v4_5_sets_modeling_with_3_samplings/" \
+    class_b_long_dist_to_b_path = "/Users/jh5442/Desktop/jov_everything/face_morph_v4_5_sets_modeling_with_3_samplings/" \
                                   "sampled_data_0227/EVT/sample_b_long_sort_by_distance_to_b.csv"
 
-    test_sample_path = "/Users/kiyoshi/Desktop/jov_everything/face_morph_v4_5_sets_modeling_with_3_samplings/" \
+    test_sample_path = "/Users/jh5442/Desktop/jov_everything/face_morph_v4_5_sets_modeling_with_3_samplings/" \
                        "sampled_data_0227/EVT/test_samples.csv"
 
     tail_size = 0.5
 
+    # 3 parameters: the order is shape, scale, location
+
     # Uniform:
-    # param_list = ["reversed_weibull", "to_B", True, [1.0, 0.9, 30]]
-    # print(param_list)
+    # inclusion_param_list = ["weibull", "to_B", True, [1.0, 0.9, 20]] # Works
+    inclusion_param_list = ["weibull", "to_B", False, [0.5, 1.5, 35]] # Does not work -- the probs are very large
+    # inclusion_param_list = ["reversed_weibull", "to_B", False, [1.0, 0.9, 40]]  # Does not work
+    # inclusion_param_list = ["reversed_weibull", "to_B", True, [1.0, 0.9, 20]]  # Works
+    print("Probability of inclusion:", inclusion_param_list)
+
+    uniform_inclusion = evt_model(training_a_data_path=class_a_uniform_path,
+                                  training_b_data_path=class_b_uniform_dist_to_b_path,
+                                  test_data_path=test_sample_path,
+                                  tail_ratio=tail_size,
+                                  sampling="uniform",
+                                  distribution=inclusion_param_list[0],
+                                  distance_choice=inclusion_param_list[1],
+                                  flip_distance=inclusion_param_list[2],
+                                  params=inclusion_param_list[3])
+    evt_uniform_inclusion = {int(k): float(v) for k, v in uniform_inclusion.items()}
+
+    print("Probability of inclusion:")
+    pprint.pprint(evt_uniform_inclusion)
+
+    # exclusion_param_list = ["weibull", "to_A", False, [1.0, 0.9, 30]]
+    # print("Probability of exclusion:", exclusion_param_list)
     #
-    # evt_uniform = evt_model(training_a_data_path=class_a_uniform_path,
-    #                           training_b_data_path=class_b_uniform_path,
-    #                           test_data_path=test_sample_path,
-    #                           tail_ratio=tail_size,
-    #                           sampling="uniform",
-    #                           distribution=param_list[0],
-    #                           distance_choice=param_list[1],
-    #                           flip_distance=param_list[2],
-    #                           params=param_list[3])
-    # print(evt_uniform_inclusion)
+    # uniform_exclusion = evt_model(training_a_data_path=class_a_uniform_path,
+    #                                   training_b_data_path=class_b_uniform_dist_to_a_path,
+    #                                   test_data_path=test_sample_path,
+    #                                   tail_ratio=tail_size,
+    #                                   sampling="uniform",
+    #                                   distribution=exclusion_param_list[0],
+    #                                   distance_choice=exclusion_param_list[1],
+    #                                   flip_distance=exclusion_param_list[2],
+    #                                   params=exclusion_param_list[3])
+    # evt_uniform_exclusion = {int(k): float(v) for k, v in uniform_exclusion.items()}
+
+    # print("Probability of exclusion:")
+    # pprint.pprint(evt_uniform_exclusion)
+
 
     # Long tail
     # param_list = ["reversed_weibull", "to_B", True, [1.0, 0.9, 7]]
@@ -268,16 +303,16 @@ if __name__ == "__main__":
     # print(evt_long_tail)
 
     # Enriched tail
-    param_list = ["reversed_weibull", "to_B", True, [1.0, 0.9, 30]]
-    print(param_list)
-
-    evt_enriched_tail = evt_model(training_a_data_path=class_a_uniform_path,
-                              training_b_data_path=class_b_enrich_dist_to_b_path,
-                              test_data_path=test_sample_path,
-                              tail_ratio=tail_size,
-                              sampling="enrich_tail",
-                              distribution=param_list[0],
-                              distance_choice=param_list[1],
-                              flip_distance=param_list[2],
-                              params=param_list[3])
-    print(evt_enriched_tail)
+    # param_list = ["reversed_weibull", "to_B", True, [1.0, 0.9, 30]]
+    # print(param_list)
+    #
+    # evt_enriched_tail = evt_model(training_a_data_path=class_a_uniform_path,
+    #                           training_b_data_path=class_b_enrich_dist_to_b_path,
+    #                           test_data_path=test_sample_path,
+    #                           tail_ratio=tail_size,
+    #                           sampling="enrich_tail",
+    #                           distribution=param_list[0],
+    #                           distance_choice=param_list[1],
+    #                           flip_distance=param_list[2],
+    #                           params=param_list[3])
+    # print(evt_enriched_tail)
