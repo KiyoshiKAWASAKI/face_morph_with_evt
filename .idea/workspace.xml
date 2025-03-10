@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="972204b1-d771-476c-9168-32994b0853a0" name="Default Changelist" comment="" />
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <list default="true" id="972204b1-d771-476c-9168-32994b0853a0" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/evt_modeling.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/preprocessing/shuffle_sampled_data.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/visualization/evt_model.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/evt_model.ipynb" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,7 +21,7 @@
         <entry file="file://$PROJECT_DIR$/modeling.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="7141">
-              <caret line="603" column="26" lean-forward="true" selection-start-line="603" selection-start-column="26" selection-end-line="603" selection-end-column="26" />
+              <caret line="603" column="26" selection-start-line="603" selection-start-column="26" selection-end-line="603" selection-end-column="26" />
               <folding>
                 <element signature="e#1#15#0" expanded="true" />
                 <element signature="e#3420#5883#0" />
@@ -24,13 +31,22 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/sampling.py">
+        <entry file="file://$PROJECT_DIR$/evt_modeling.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="62" selection-start-line="62" selection-end-line="68" selection-end-column="58" />
+            <state relative-caret-position="504">
+              <caret line="275" column="52" selection-start-line="275" selection-start-column="52" selection-end-line="275" selection-end-column="52" />
               <folding>
-                <element signature="e#0#14#0" expanded="true" />
+                <element signature="e#0#9#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/preprocessing/shuffle_sampled_data.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="720">
+              <caret line="30" column="62" selection-start-line="30" selection-start-column="62" selection-end-line="30" selection-end-column="62" />
             </state>
           </provider>
         </entry>
@@ -74,13 +90,19 @@
         <option value="$PROJECT_DIR$/generate_distance.py" />
         <option value="$PROJECT_DIR$/modeling.py" />
         <option value="$PROJECT_DIR$/sampling.py" />
+        <option value="$PROJECT_DIR$/preprocessing/shuffle_sampled_data.py" />
+        <option value="$PROJECT_DIR$/evt_modeling.py" />
       </list>
     </option>
   </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 8
+}]]></component>
   <component name="ProjectFrameBounds" fullScreen="true">
     <option name="width" value="1920" />
     <option name="height" value="1080" />
   </component>
+  <component name="ProjectId" id="2u8LNVoP6qXnelFm0D6bq2JeeOF" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
@@ -95,6 +117,11 @@
             </path>
             <path>
               <item name="face_morph_with_evt" type="b2602c69:ProjectViewProjectNode" />
+              <item name="face_morph_with_evt" type="462c0819:PsiDirectoryNode" />
+              <item name="preprocessing" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="face_morph_with_evt" type="b2602c69:ProjectViewProjectNode" />
               <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
             </path>
           </expand>
@@ -104,37 +131,34 @@
       <pane id="Scope" />
     </panes>
   </component>
-  <component name="PropertiesComponent">
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="true" />
-    <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
-    <property name="WebServerToolWindowPanel.toolwindow.highlight.symlinks" value="true" />
-    <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
-    <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
-    <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="node.js.detected.package.eslint" value="true" />
-    <property name="node.js.detected.package.tslint" value="true" />
-    <property name="node.js.path.for.package.eslint" value="project" />
-    <property name="node.js.path.for.package.tslint" value="project" />
-    <property name="node.js.selected.package.eslint" value="(autodetect)" />
-    <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
-    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="reference.settings.deploy.options" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/Users/jh5442/Desktop/Hehe/face_morph_with_evt",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "editor.preferences.fonts.default",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-76f8388c3a79-JavaScript-PY-243.24978.54" />
+        <option value="bundled-python-sdk-91e3b7efe1d4-466328ff949b-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-243.24978.54" />
+      </set>
+    </attachedChunks>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -159,17 +183,18 @@
       <workItem from="1733366400547" duration="15000" />
       <workItem from="1736971617673" duration="526000" />
       <workItem from="1740424159213" duration="7436000" />
+      <workItem from="1741625216205" duration="1784000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="211091000" />
+    <option name="totallyTimeSpent" value="224242000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1920" height="1080" extended-state="0" />
+    <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.08945687" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.102564104" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -195,7 +220,7 @@
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="3" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/find_missing_morphs.py">
@@ -282,10 +307,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/sampling.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="379">
+          <caret line="41" selection-start-line="41" selection-end-line="46" selection-end-column="34" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/modeling.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="7141">
-          <caret line="603" column="26" lean-forward="true" selection-start-line="603" selection-start-column="26" selection-end-line="603" selection-end-column="26" />
+          <caret line="603" column="26" selection-start-line="603" selection-start-column="26" selection-end-line="603" selection-end-column="26" />
           <folding>
             <element signature="e#1#15#0" expanded="true" />
             <element signature="e#3420#5883#0" />
@@ -293,12 +328,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sampling.py">
+    <entry file="file://$PROJECT_DIR$/preprocessing/shuffle_sampled_data.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="62" selection-start-line="62" selection-end-line="68" selection-end-column="58" />
+        <state relative-caret-position="720">
+          <caret line="30" column="62" selection-start-line="30" selection-start-column="62" selection-end-line="30" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evt_modeling.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="504">
+          <caret line="275" column="52" selection-start-line="275" selection-start-column="52" selection-end-line="275" selection-end-column="52" />
           <folding>
-            <element signature="e#0#14#0" expanded="true" />
+            <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
