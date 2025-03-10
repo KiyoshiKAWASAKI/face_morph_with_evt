@@ -2,7 +2,7 @@
 <project version="4">
   <component name="SshConfigs">
     <configs>
-      <sshConfig authType="PASSWORD" connectionConfig="{&quot;serverAliveInterval&quot;:300}" host="crcfe01.crc.nd.edu" id="7703d6b0-7225-4ebe-9777-6b6f496beaf9" port="22" customName="CRC01" nameFormat="CUSTOM" useOpenSSHConfig="true">
+      <sshConfig authType="PASSWORD" connectionConfig="{&quot;serverAliveInterval&quot;:300}" host="crcfe01.crc.nd.edu" id="7703d6b0-7225-4ebe-9777-6b6f496beaf9" port="22" customName="CRC01" nameFormat="CUSTOM" username="jhuang24" useOpenSSHConfig="true">
         <option name="customName" value="CRC01" />
       </sshConfig>
     </configs>

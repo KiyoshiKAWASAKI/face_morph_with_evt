@@ -216,31 +216,24 @@ def evt_model(training_a_data_path,
 
 
 if __name__ == "__main__":
+    # Use data that is not shuffled
     class_a_uniform_path = "/Users/kiyoshi/Desktop/jov_everything/face_morph_v4_5_sets_modeling_with_3_samplings/" \
-                           "sampled_data_0227/shuffled/sample_a.csv"
+                           "sampled_data_0227/EVT/sample_a.csv"
     class_b_uniform_path = "/Users/kiyoshi/Desktop/jov_everything/face_morph_v4_5_sets_modeling_with_3_samplings/" \
-                           "sampled_data_0227/shuffled/sample_b_uniform_use_for_both_ab.csv"
+                           "sampled_data_0227/EVT/sample_b_uniform_use_for_both_ab.csv"
 
     class_b_enrich_dist_to_a_path = "/Users/kiyoshi/Desktop/jov_everything/face_morph_v4_5_sets_modeling_with_3_samplings/" \
-                                    "sampled_data_0227/shuffled/sample_b_enrich_sort_by_distance_to_a.csv"
+                                    "sampled_data_0227/EVT/sample_b_enrich_sort_by_distance_to_a.csv"
     class_b_enrich_dist_to_b_path = "/Users/kiyoshi/Desktop/jov_everything/face_morph_v4_5_sets_modeling_with_3_samplings/" \
-                                    "sampled_data_0227/shuffled/sample_b_enrich_sort_by_distance_to_b.csv"
+                                    "sampled_data_0227/EVT/sample_b_enrich_sort_by_distance_to_b.csv"
 
     class_b_long_dist_to_a_path = "/Users/kiyoshi/Desktop/jov_everything/face_morph_v4_5_sets_modeling_with_3_samplings/" \
-                                  "sampled_data_0227/shuffled/sample_b_long_sort_by_distance_to_a.csv"
+                                  "sampled_data_0227/EVT/sample_b_long_sort_by_distance_to_a.csv"
     class_b_long_dist_to_b_path = "/Users/kiyoshi/Desktop/jov_everything/face_morph_v4_5_sets_modeling_with_3_samplings/" \
-                                  "sampled_data_0227/shuffled/sample_b_long_sort_by_distance_to_b.csv"
+                                  "sampled_data_0227/EVT/sample_b_long_sort_by_distance_to_b.csv"
 
     test_sample_path = "/Users/kiyoshi/Desktop/jov_everything/face_morph_v4_5_sets_modeling_with_3_samplings/" \
                        "sampled_data_0227/EVT/test_samples.csv"
-
-    # shape_uniform = 9.0
-    # scale_uniform = 0.2
-    # location_uniform = 40
-    #
-    # shape_enrich = 100.0
-    # scale_enrich = 0.1
-    # location_enrich = 39
 
     tail_size = 0.5
 
