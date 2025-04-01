@@ -313,24 +313,24 @@ if __name__ == "__main__":
 
     # Parameters
     # TODO v1: has crossing, closer to human
-    # uniform_inclusion_param_list = ["reversed_weibull", "to_B", True, [0.9, 1.0, 17]]
-    # uniform_exclusion_param_list = ["weibull", "to_A", False, [1.0, 0.9, 15]]
-    #
-    # enrich_inclusion_param_list = ["reversed_weibull", "to_B", True, [0.9, 1.0, 11]]
-    # enrich_exclusion_param_list = ["weibull", "to_A", False, [1.0, 0.9, 20]]
-    #
-    # long_inclusion_param_list = ["reversed_weibull", "to_B", True, [0.1, 0.9, 3.0]]
-    # long_exclusion_param_list = ["weibull", "to_A", False, [1.5, 0.9, 45]]
-
-    # TODO v2: no crossing, farther from human
-    uniform_inclusion_param_list = ["reversed_weibull", "to_B", True, [0.9, 1.0, 25]]
-    uniform_exclusion_param_list = ["weibull", "to_A", False, [1.0, 0.9, 20]]
+    uniform_inclusion_param_list = ["reversed_weibull", "to_B", True, [0.9, 1.0, 17]]
+    uniform_exclusion_param_list = ["weibull", "to_A", False, [1.0, 0.9, 15]]
 
     enrich_inclusion_param_list = ["reversed_weibull", "to_B", True, [0.9, 1.0, 11]]
     enrich_exclusion_param_list = ["weibull", "to_A", False, [1.0, 0.9, 20]]
 
     long_inclusion_param_list = ["reversed_weibull", "to_B", True, [0.1, 0.9, 3.0]]
     long_exclusion_param_list = ["weibull", "to_A", False, [1.5, 0.9, 45]]
+
+    # TODO v2: no crossing, farther from human
+    # uniform_inclusion_param_list = ["reversed_weibull", "to_B", True, [0.9, 1.0, 25]]
+    # uniform_exclusion_param_list = ["weibull", "to_A", False, [1.0, 0.9, 20]]
+    #
+    # enrich_inclusion_param_list = ["reversed_weibull", "to_B", True, [0.9, 1.0, 11]]
+    # enrich_exclusion_param_list = ["weibull", "to_A", False, [1.0, 0.9, 20]]
+    #
+    # long_inclusion_param_list = ["reversed_weibull", "to_B", True, [0.1, 0.9, 3.0]]
+    # long_exclusion_param_list = ["weibull", "to_A", False, [1.5, 0.9, 45]]
 
     uniform_inclusion = evt_model(training_a_data_path=class_a_uniform_path,
                                   training_b_data_path=class_b_uniform_dist_to_b_path,
@@ -387,9 +387,9 @@ if __name__ == "__main__":
     enrich_final = evt_final_prob(inclusion_prob=enrich_inclusion,
                                   exclusion_prob=enrich_exclusion)
 
-    print(evt_enrich_inclusion)
-    print(evt_enrich_exclusion)
-    print(enrich_final)
+    # print(evt_enrich_inclusion)
+    # print(evt_enrich_exclusion)
+    # print(enrich_final)
 
     # Long tail
     long_inclusion = evt_model(training_a_data_path=class_a_uniform_path,
@@ -417,6 +417,10 @@ if __name__ == "__main__":
     long_final = evt_final_prob(inclusion_prob=long_inclusion,
                                 exclusion_prob=long_exclusion)
 
-    plot_evt_curve(evt_uniform=uniform_final,
-                   evt_enrich=enrich_final,
-                   evt_long=long_final)
+    # plot_evt_curve(evt_uniform=uniform_final,
+    #                evt_enrich=enrich_final,
+    #                evt_long=long_final)
+
+    print(uniform_final)
+    print(enrich_final)
+    print(long_final)   

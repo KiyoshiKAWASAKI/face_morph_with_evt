@@ -5,7 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="972204b1-d771-476c-9168-32994b0853a0" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/sshConfigs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sshConfigs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evt_modeling.py" beforeDir="false" afterPath="$PROJECT_DIR$/evt_modeling.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/visualization/.ipynb_checkpoints/gaussian_model_with_a-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/.ipynb_checkpoints/gaussian_model_with_a-checkpoint.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/visualization/gaussian_model_with_a.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/gaussian_model_with_a.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/visualization/modeling.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/modeling.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/visualization/plot_distance_data.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/plot_distance_data.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -135,21 +141,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/jh5442/Desktop/Hehe/face_morph_with_evt&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.fonts.default&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "WebServerToolWindowPanel.toolwindow.highlight.mappings": "true",
+    "WebServerToolWindowPanel.toolwindow.highlight.symlinks": "true",
+    "WebServerToolWindowPanel.toolwindow.show.date": "false",
+    "WebServerToolWindowPanel.toolwindow.show.permissions": "false",
+    "WebServerToolWindowPanel.toolwindow.show.size": "false",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/Users/jh5442/Desktop/Hehe/face_morph_with_evt",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "editor.preferences.fonts.default",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -184,7 +195,7 @@
       <workItem from="1736971617673" duration="526000" />
       <workItem from="1740424159213" duration="7436000" />
       <workItem from="1741625216205" duration="1784000" />
-      <workItem from="1742311836199" duration="10574000" />
+      <workItem from="1742311836199" duration="22650000" />
     </task>
     <servers />
   </component>
