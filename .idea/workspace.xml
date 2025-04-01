@@ -6,10 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="972204b1-d771-476c-9168-32994b0853a0" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/evt_modeling.py" beforeDir="false" afterPath="$PROJECT_DIR$/evt_modeling.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visualization/.ipynb_checkpoints/evt_model-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/.ipynb_checkpoints/evt_model-checkpoint.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visualization/evt_model.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/evt_model.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visualization/gaussian_model_with_a.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/gaussian_model_with_a.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -188,7 +184,7 @@
       <workItem from="1736971617673" duration="526000" />
       <workItem from="1740424159213" duration="7436000" />
       <workItem from="1741625216205" duration="1784000" />
-      <workItem from="1742311836199" duration="546000" />
+      <workItem from="1742311836199" duration="10574000" />
     </task>
     <servers />
   </component>
