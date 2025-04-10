@@ -5,15 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="972204b1-d771-476c-9168-32994b0853a0" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/line_evt_modeling.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/line_gauss_modeling.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/evt_modeling.py" beforeDir="false" afterPath="$PROJECT_DIR$/evt_modeling.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visualization/.ipynb_checkpoints/modeling-checkpoint.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visualization/.ipynb_checkpoints/plot_all_face_curves-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/.ipynb_checkpoints/plot_all_face_curves-checkpoint.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visualization/.ipynb_checkpoints/process_line_survey_results-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/.ipynb_checkpoints/process_line_survey_results-checkpoint.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visualization/modeling.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visualization/plot_all_face_curves.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/plot_all_face_curves.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visualization/process_face_survey_results.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/process_face_survey_results.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visualization/process_line_survey_results.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/process_line_survey_results.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evt_modeling.py" beforeDir="false" afterPath="$PROJECT_DIR$/face_evt_modeling.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modeling.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -197,7 +193,7 @@
       <workItem from="1736971617673" duration="526000" />
       <workItem from="1740424159213" duration="7436000" />
       <workItem from="1741625216205" duration="1784000" />
-      <workItem from="1742311836199" duration="37271000" />
+      <workItem from="1742311836199" duration="41990000" />
     </task>
     <servers />
   </component>
